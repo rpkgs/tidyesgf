@@ -16,9 +16,18 @@
     <loc>/index.html</loc>
   </url>
   <url>
+    <loc>/reference/build_esgf_url.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/rpkg.template-package.html</loc>
+    <loc>/reference/ok.html</loc>
+  </url>
+  <url>
+    <loc>/reference/reexports.html</loc>
+  </url>
+  <url>
+    <loc>/reference/tidyesgf-package.html</loc>
   </url>
 </urlset>
