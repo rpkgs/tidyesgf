@@ -1,4 +1,7 @@
 #' @import magrittr
+#' @importFrom purrr map map_df
+#' @importFrom jsonlite fromJSON read_json
+#' 
 #' @keywords internal
 "_PACKAGE"
 

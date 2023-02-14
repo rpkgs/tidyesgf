@@ -1,0 +1,57 @@
+```{r}
+library(httr)
+library(xml2)
+library(magrittr)
+library(jsonlite)
+library(dplyr)
+
+```
+
+```{r}
+# l <- retrieve_esgf_docs()
+info <- tidy_esgp_docs(docs)
+s <- CMIP5Files_info(info$file) %>% CMIP5Files_summary()
+s
+# 需要手动剔除重复的node
+```
+
+```{r}
+library(dplyr)
+
+info %>% 
+  mutate(across(​north_degrees:west_degrees, as.numeric)) %>% 
+  select(​north_degrees:west_degrees) %>% 
+  summary()
+# split(info, info)
+# 找到了解决方案
+```
+
+> 很多模型，现在有很多信息
+
+```{r}
+# 根据`_version_`选择最新版本的数据
+MODEL = "TaiESM1"
+MODEL = "NorCPM1"
+# MODEL = "NorESM2-LM"
+
+dat = data[source_id == MODEL, .N, 
+  .(file, source_id, version, version2, `_version_`, timestamp, `_timestamp`, mod_time)]
+
+# version = 1的是最新版
+fs = unique(dat$file)
+dat[file %in% fs[1:1]] #%>% select(-file)
+
+# d2 = ddply(d, .(file), function(d) {
+#   top_n(d, 1, `_version_`)
+# })
+```
+
+```{r}
+# 挑选最新版本的数据
+d2 = group_by(.info, file) %>%
+  top_n(1, `version2`) %>% collect()
+d2
+```
+
+> 按照version2挑选有重复的数据
+
