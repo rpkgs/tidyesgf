@@ -1,3 +1,13 @@
+#' Colored terminal output
+#' @name color_terminal
+#'
+#' @param ... Strings to style.
+#' @importFrom crayon green red bold underline
+#'
+#' @keywords internal
+#' @export
+NULL
+
 #' @export
 crayon::bold
 
@@ -10,17 +20,10 @@ crayon::green
 #' @export
 crayon::underline
 
-#' Colored terminal output
-#'
-#' @param ... Strings to style.
-#' @importFrom crayon green red bold underline
-#'
-#' @keywords internal
-#' @rdname ok
-#' @export
+#' @rdname color_terminal
 ok <- function(...) cat(green(...), sep = "\n")
 
-#' @rdname ok
+#' @rdname color_terminal
 #' @export
 warn <- function(...) cat(red(...), sep = "\n")
 # warn  <- function(...) cat(red $ underline (...))
@@ -34,14 +37,14 @@ width_str <- function(str, width = NULL) {
   }
 }
 
-#' @rdname ok
+#' @rdname color_terminal
 #' @export
 num_bad <- function(str, width = NULL, ...) {
   str <- width_str(str, width)
   bold$ underline$ red(str)
 }
 
-#' @rdname ok
+#' @rdname color_terminal
 #' @export
 num_good <- function(str, width = NULL, ...) {
   str <- width_str(str, width)

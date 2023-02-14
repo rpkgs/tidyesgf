@@ -22,35 +22,54 @@ default_param_esgf <- list(
   offset        = 0
 )
 
+#' @rdname search_esgf
+#' @export
 build_esgf_param <- function(..., param = NULL) {
-  keys <- c(param, list(...))
+  # param should be list
+  if (is.character(param)) {
+    param %<>% as.list()
+  }
+  keys <- c(param, listk(...))
   # print(str(keys))
-  keys <- modifyList(default_param_esgf, keys) %>% unlist()
+
+  keys <- modifyList(default_param_esgf, keys) %>% 
+    rm_empty()
   keys
 }
 
-#' build_esgf_url
-#' 
-#' @param param list parameters
-#' @param ... named parameters
+#' @rdname search_esgf
+#' @export
 build_esgf_url <- function(..., param = NULL, host = "https://esgf-node.llnl.gov/esg-search/search") {
   keys <- build_esgf_param(..., param = param)
   build_url(host, keys)
 }
 
-retrieve_esgf_docs <- function(..., param = NULL) {
-  param = build_esgf_param(..., param = NULL)
+#' @rdname search_esgf
+#' @export 
+retrieve_esgf_docs <- function(
+  variable_id = "tasmax", 
+  table_id = "day", 
+  experiment_id = "historical", 
+  member_id = "r1i1p1f1", 
+  source_id = NULL, 
+  ..., param = NULL) 
+{
+  param = build_esgf_param(
+    variable_id, table_id, experiment_id, member_id, source_id, 
+    ..., param = NULL)
+  # print(param)
+
   offset   = 0
   numFound = 10000
   
   docs <- NULL
   i = 1
-  
+
   while (offset < numFound) {
     param["offset"] <- offset
     url <- build_esgf_url(param = param)
-    # print(offset)
-    # ok("")
+    warn(url)
+
     res <- jsonlite::fromJSON(url)$response
     docs %<>% rbind(res$docs)
 
@@ -63,12 +82,53 @@ retrieve_esgf_docs <- function(..., param = NULL) {
   docs
 }
 
-search_esgf <- function() {  
-  # do.call(paste0, param)
-  # paste0()
-  # GET()  
-}
 
-extract_query_file <- function(docs) {
-  
+#' search_esgf
+#'
+#' @details
+#' #### Parameters
+#'
+#' - project       : "CMIP6"
+#' - type          : "File"
+#' - table_id      : "day"
+#' - variable_id   : "tasmax"
+#' - experiment_id : "historical"
+#' - source_id     : "ACCESS-CM2"
+#' - member_id     : "r1i1p1f1"
+#' - latest        : TRUE
+#'
+#' @param param list parameters
+#' @param ... named parameters
+#'
+#' @export 
+search_esgf <- function(
+  variable_id = "tasmax", 
+  table_id = "day", 
+  experiment_id = "historical", 
+  member_id = "r1i1p1f1", 
+  source_id = NULL, ..., 
+  url_type = c("HTTPServer", "OPENDAP"),
+  param) 
+{
+  param = build_esgf_param(
+    variable_id, table_id, experiment_id, member_id, source_id,
+    ..., param = NULL)
+    
+  t <- system.time({
+    docs <- retrieve_esgf_docs(param = param)
+  })
+  print(t)
+
+  info <- tidy_esgp_docs(docs, url_type = url_type)
+  s <- CMIP5Files_info(info$file) %>% CMIP5Files_summary()
+  s
+
+  info2 <- merge(info, d_host)
+  info2 %<>%
+    group_by(file) %>%
+    top_n(-1, version) %>% # lastest version
+    group_by(file, version) %>%
+    top_n(-1, speed_ms) %>%
+    data.table() # fast node
+  info2
 }

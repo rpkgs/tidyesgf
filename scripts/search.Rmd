@@ -7,51 +7,44 @@ library(dplyr)
 
 ```
 
+# 1. 案例1
+
+## 1.1. 获取文件信息
 ```{r}
-# l <- retrieve_esgf_docs()
-info <- tidy_esgp_docs(docs)
+param <- list(
+  variable_id = "tasmax", 
+  table_id = "day", 
+  experiment_id = "piControl", 
+  member_id = "r1i1p1f1"
+)
+
+t <- system.time({
+  docs <- retrieve_esgf_docs(experiment_id = "piControl")
+})
+print(t)
+```
+
+## 1.2. 文件挑选与清洗
+
+```{r}
+# type <- c("OPENDAP", "HTTPServer")
+type <- c("HTTPServer", "OPENDAP")
+
+info <- tidy_esgp_docs(docs, type = type)
 s <- CMIP5Files_info(info$file) %>% CMIP5Files_summary()
 s
-# 需要手动剔除重复的node
 ```
+
+## 1.3. 筛选：最新版本、最快节点
 
 ```{r}
-library(dplyr)
+# d_host <- ping_host(info$host %>% unique())
+info2 <- merge(info, d_host)
+info2 %<>% 
+  group_by(file) %>% top_n(-1, version) %>%      # lastest version
+  group_by(file, version) %>% top_n(-1, speed_ms) %>% data.table() # fast node
+info2
 
-info %>% 
-  mutate(across(​north_degrees:west_degrees, as.numeric)) %>% 
-  select(​north_degrees:west_degrees) %>% 
-  summary()
-# split(info, info)
-# 找到了解决方案
+s <- CMIP5Files_info(info2$file) %>% CMIP5Files_summary()
+s
 ```
-
-> 很多模型，现在有很多信息
-
-```{r}
-# 根据`_version_`选择最新版本的数据
-MODEL = "TaiESM1"
-MODEL = "NorCPM1"
-# MODEL = "NorESM2-LM"
-
-dat = data[source_id == MODEL, .N, 
-  .(file, source_id, version, version2, `_version_`, timestamp, `_timestamp`, mod_time)]
-
-# version = 1的是最新版
-fs = unique(dat$file)
-dat[file %in% fs[1:1]] #%>% select(-file)
-
-# d2 = ddply(d, .(file), function(d) {
-#   top_n(d, 1, `_version_`)
-# })
-```
-
-```{r}
-# 挑选最新版本的数据
-d2 = group_by(.info, file) %>%
-  top_n(1, `version2`) %>% collect()
-d2
-```
-
-> 按照version2挑选有重复的数据
-

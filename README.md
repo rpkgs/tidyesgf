@@ -2,21 +2,21 @@
 # R package template
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/rpkgs/rpkg-template/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rpkgs/rpkg-template/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/rpkgs/rpkg.template/branch/master/graph/badge.svg)](https://app.codecov.io/gh/rpkgs/rpkg.template)
-<!-- [![CRAN](http://www.r-pkg.org/badges/version/rpkg.template)](https://cran.r-project.org/package=rpkg.template) -->
-<!-- [![total](http://cranlogs.r-pkg.org/badges/grand-total/rpkg.template)](https://www.rpackages.io/package/rpkg.template) -->
-<!-- [![monthly](http://cranlogs.r-pkg.org/badges/rpkg.template)](https://www.rpackages.io/package/rpkg.template) -->
+[![R-CMD-check](https://github.com/rpkgs/tidyesgf/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rpkgs/tidyesgf/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/rpkgs/tidyesgf/branch/master/graph/badge.svg)](https://app.codecov.io/gh/rpkgs/tidyesgf)
+<!-- [![CRAN](http://www.r-pkg.org/badges/version/tidyesgf)](https://cran.r-project.org/package=tidyesgf) -->
+<!-- [![total](http://cranlogs.r-pkg.org/badges/grand-total/tidyesgf)](https://www.rpackages.io/package/tidyesgf) -->
+<!-- [![monthly](http://cranlogs.r-pkg.org/badges/tidyesgf)](https://www.rpackages.io/package/tidyesgf) -->
 <!-- badges: end -->
 
-The goal of `rpkg.template` is to ...
+The goal of `tidyesgf` is to ...
 
 ## Installation
 
-You can install the development version of `rpkg.template` like so:
+You can install the development version of `tidyesgf` like so:
 
 ``` r
-remotes::install_github("rpkgs/rpkg.template")
+remotes::install_github("rpkgs/tidyesgf")
 ```
 
 ## Example
@@ -24,6 +24,6 @@ remotes::install_github("rpkgs/rpkg.template")
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-library(rpkg.template)
+library(tidyesgf)
 ## basic example code
 ```

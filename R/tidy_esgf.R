@@ -1,22 +1,27 @@
-
-
-find_opendap <- function(urls) {
-  res = urls %>% .[grep("OPENDAP", .)]
+filter_esgp_url <- function(urls, url_type = c("OPENDAP", "HTTPServer")) {
+  res = urls %>% .[grep(url_type[1], .)]
   if (length(res) == 0) {
-    res = urls %>% .[grep("HTTPServer", .)]
+    # res = NA
+    res = urls %>% .[grep(url_type[2], .)]
   }
   res
 }
 
+#' tidy_esgp_docs
+#' 
+#' @param url_type if `url_type[1]` not found, use `url_type[2]` instead
+#' 
 #' @importFrom dplyr mutate rename arrange relocate
 #' @importFrom data.table data.table as.data.table
 #' @importFrom purrr map map_chr
-tidy_esgp_docs <- function(docs) {
-  urls_raw = sapply(docs$url, find_opendap)
+#' 
+#' @export 
+tidy_esgp_docs <- function(docs, url_type = c("OPENDAP", "HTTPServer")) {
+  urls_raw = sapply(docs$url, filter_esgp_url, url_type)
   tmp = urls_raw %>% strsplit("\\|")
   info <- data.table(
     url = map_chr(tmp, ~ .[1]),
-    type = map_chr(tmp, ~ .[3])
+    url_type = map_chr(tmp, ~ .[3])
   )
   
   names <- c(
