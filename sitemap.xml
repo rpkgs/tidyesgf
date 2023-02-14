@@ -16,7 +16,13 @@
     <loc>/index.html</loc>
   </url>
   <url>
+    <loc>/reference/CMIP5Files_info.html</loc>
+  </url>
+  <url>
     <loc>/reference/build_esgf_url.html</loc>
+  </url>
+  <url>
+    <loc>/reference/get_CMIP5.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
