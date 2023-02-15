@@ -100,7 +100,7 @@ If duration and period are <code>null</code> at the same time, no filter applied
 
 
 <dt>check_dupli</dt>
-<dd><p>Boolean. If true, duplicated date will be removed by <code>check_dfile()</code>.</p></dd>
+<dd><p>Boolean. If true, duplicated date will be removed by <code><a href="check_dfile.html">check_dfile()</a></code>.</p></dd>
 
 
 <dt>verbose</dt>
@@ -124,7 +124,7 @@ If duration and period are <code>null</code> at the same time, no filter applied
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code>check_dfile()</code>, <code>rm_duplicate()</code></p></div>
+    <div class="dont-index"><p><code><a href="check_dfile.html">check_dfile()</a></code>, <code><a href="rm_duplicate.html">rm_duplicate()</a></code></p></div>
     </div>
 
     <div id="ref-examples">
@@ -140,11 +140,11 @@ If duration and period are <code>null</code> at the same time, no filter applied
 <span class="r-out co"><span class="r-pr">#&gt;</span>    4:    4 piControl ACCESS1-0   r1i1p1  day  375-01-01  399-12-31  375-01-01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    5:    5 piControl ACCESS1-0   r1i1p1  day  400-01-01  424-12-31  400-01-01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2448: 2448 piControl    inmcm4   r1i1p1  day 2300-01-01 2309-12-31 2300-01-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2449: 2449 piControl    inmcm4   r1i1p1  day 2310-01-01 2319-12-31 2310-01-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2450: 2450 piControl    inmcm4   r1i1p1  day 2320-01-01 2329-12-31 2320-01-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2451: 2451 piControl    inmcm4   r1i1p1  day 2330-01-01 2339-12-31 2330-01-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2452: 2452 piControl    inmcm4   r1i1p1  day 2340-01-01 2349-12-31 2340-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2448: 2448 piControl NorESM1-M   r1i1p1  day 1000-01-01 1049-12-31 1000-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2449: 2449 piControl NorESM1-M   r1i1p1  day 1050-01-01 1099-12-31 1050-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2450: 2450 piControl NorESM1-M   r1i1p1  day 1100-01-01 1149-12-31 1100-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2451: 2451 piControl NorESM1-M   r1i1p1  day 1150-01-01 1150-12-31 1150-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2452: 2452 piControl NorESM1-M   r1i1p1  day 1151-01-01 1200-12-31 1151-01-01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          end_adj year_start year_end len</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    1:  324-12-31        300      324  25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    2:  349-12-31        325      349  25</span>
@@ -152,11 +152,11 @@ If duration and period are <code>null</code> at the same time, no filter applied
 <span class="r-out co"><span class="r-pr">#&gt;</span>    4:  399-12-31        375      399  25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    5:  424-12-31        400      424  25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2448: 2309-12-31       2300     2309  10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2449: 2319-12-31       2310     2319  10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2450: 2329-12-31       2320     2329  10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2451: 2339-12-31       2330     2339  10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2452: 2349-12-31       2340     2349  10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2448: 1049-12-31       1000     1049  50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2449: 1099-12-31       1050     1099  50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2450: 1149-12-31       1100     1149  50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2451: 1150-12-31       1150     1150   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2452: 1200-12-31       1151     1200  50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                             file</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    1: tasmax_day_ACCESS1-0_piControl_r1i1p1_03000101-03241231.nc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    2: tasmax_day_ACCESS1-0_piControl_r1i1p1_03250101-03491231.nc</span>
@@ -164,19 +164,128 @@ If duration and period are <code>null</code> at the same time, no filter applied
 <span class="r-out co"><span class="r-pr">#&gt;</span>    4: tasmax_day_ACCESS1-0_piControl_r1i1p1_03750101-03991231.nc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    5: tasmax_day_ACCESS1-0_piControl_r1i1p1_04000101-04241231.nc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2448:    tasmax_day_inmcm4_piControl_r1i1p1_23000101-23091231.nc</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2449:    tasmax_day_inmcm4_piControl_r1i1p1_23100101-23191231.nc</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2450:    tasmax_day_inmcm4_piControl_r1i1p1_23200101-23291231.nc</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2451:    tasmax_day_inmcm4_piControl_r1i1p1_23300101-23391231.nc</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2452:    tasmax_day_inmcm4_piControl_r1i1p1_23400101-23491231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2448: tasmax_day_NorESM1-M_piControl_r1i1p1_10000101-10491231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2449: tasmax_day_NorESM1-M_piControl_r1i1p1_10500101-10991231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2450: tasmax_day_NorESM1-M_piControl_r1i1p1_11000101-11491231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2451: tasmax_day_NorESM1-M_piControl_r1i1p1_11500101-11501231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2452: tasmax_day_NorESM1-M_piControl_r1i1p1_11510101-12001231.nc</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get the summary infomation of CMIP5Files_filter or CMIP5Files_info</span></span></span>
 <span class="r-in"><span><span class="fu">CMIP5Files_filter</span><span class="op">(</span><span class="va">files_short</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">CMIP5Files_summary</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called ‘plyr’</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">=========================== piControl  ===========================</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              model ensemble  scenario      start        end  start_adj</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:      ACCESS1-0   r1i1p1 piControl  600-01-01  799-12-31  600-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:      ACCESS1-3   r1i1p1 piControl  550-01-01  749-12-31  550-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:     bcc-csm1-1   r1i1p1 piControl  168-01-01  500-12-31  301-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   bcc-csm1-1-m   r1i1p1 piControl  201-01-01  400-12-31  201-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:        BNU-ESM   r1i1p1 piControl 1450-01-01 1972-12-31 1450-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:        CanESM2   r1i1p1 piControl 2911-01-01 3110-12-31 2911-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:      CESM1-BGC   r1i1p1 piControl  400-01-01  600-12-31  401-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:      CMCC-CESM   r1i1p1 piControl 4396-01-01 4600-12-31 4401-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:        CMCC-CM   r1i1p1 piControl 1680-01-01 1879-12-31 1680-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:       CMCC-CMS   r1i1p1 piControl 3984-01-01 4183-12-31 3984-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:       CNRM-CM5   r1i1p1 piControl 2500-01-01 2699-12-31 2500-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:  CSIRO-Mk3-6-0   r1i1p1 piControl  301-01-01  500-12-31  301-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:       EC-EARTH   r1i1p1 piControl 2350-01-01 2551-12-31 2352-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:      FGOALS-g2   r1i1p1 piControl  560-01-01  641-01-15  560-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:      FGOALS-s2   r1i1p1 piControl 2151-01-01 2350-12-31 2151-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:       GFDL-CM3   r1i1p1 piControl  601-01-01  800-12-31  601-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:     GFDL-ESM2G   r1i1p1 piControl  301-01-01  500-12-31  301-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:     GFDL-ESM2M   r1i1p1 piControl  301-01-01  500-12-31  301-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:     HadGEM2-CC   r1i1p1 piControl 1899-12-01 2099-12-30 1900-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:     HadGEM2-ES   r1i1p1 piControl 2228-12-01 2435-11-30 2236-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:         inmcm4   r1i1p1 piControl 2150-01-01 2349-12-31 2150-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:   IPSL-CM5A-LR   r1i1p1 piControl 2600-01-01 2799-12-31 2600-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23:   IPSL-CM5A-MR   r1i1p1 piControl 1900-01-01 2099-12-31 1900-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24:   IPSL-CM5B-LR   r1i1p1 piControl 1830-01-01 2129-12-31 1930-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25:      MIROC-ESM   r1i1p1 piControl 2120-01-01 2429-12-31 2230-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26: MIROC-ESM-CHEM   r1i1p1 piControl 1846-01-01 2100-12-31 1901-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27:        MIROC4h   r1i1p1 piControl   51-01-01  150-12-31   51-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28:         MIROC5   r1i1p1 piControl 2670-01-01 2869-12-31 2670-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29:     MPI-ESM-LR   r1i1p1 piControl 2650-01-01 2849-12-31 2650-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30:     MPI-ESM-MR   r1i1p1 piControl 2650-01-01 2849-12-31 2650-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31:      MPI-ESM-P   r1i1p1 piControl 2800-01-01 3005-12-31 2806-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32:      MRI-CGCM3   r1i1p1 piControl 2151-01-01 2350-12-31 2151-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33:      NorESM1-M   r1i1p1 piControl 1000-01-01 1200-12-31 1001-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              model ensemble  scenario      start        end  start_adj</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        end_adj year_start year_end   n len len_adj</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:  799-12-31        600      799   8 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:  749-12-31        550      749   8 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:  500-12-31        168      500   2 333     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:  400-12-31        201      400   8 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: 1649-12-31       1450     1972   1 523     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: 3110-12-31       2911     3110   2 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:  600-12-31        400      600   8 201     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: 4600-12-31       4396     4600  35 205     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: 1879-12-31       1680     1879 200 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: 4183-12-31       3984     4183  20 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11: 2699-12-31       2500     2699  40 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:  500-12-31        301      500  10 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13: 2551-12-31       2350     2551  21 202     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:  641-01-15        560      641  82  82      82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15: 2350-12-31       2151     2350 200 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:  800-12-31        601      800  40 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:  500-12-31        301      500  40 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:  500-12-31        301      500  40 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19: 2099-12-30       1899     2099  41 201     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20: 2435-11-30       2228     2435  21 208     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21: 2349-12-31       2150     2349  20 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22: 2799-12-31       2600     2799   1 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23: 2099-12-31       1900     2099  10 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24: 2129-12-31       1830     2129   2 300     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25: 2429-12-31       2120     2429   3 310     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26: 2100-12-31       1846     2100   2 255     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27:  150-12-31         51      150 100 100     100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28: 2869-12-31       2670     2869  20 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29: 2849-12-31       2650     2849  20 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30: 2849-12-31       2650     2849  20 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31: 3005-12-31       2800     3005  19 206     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32: 2350-12-31       2151     2350  20 200     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33: 1200-12-31       1000     1200   5 201     200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        end_adj year_start year_end   n len len_adj</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># filter CMIP5 files</span></span></span>
 <span class="r-in"><span><span class="fu">CMIP5Files_filter</span><span class="op">(</span><span class="va">files_short</span>, duration <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called ‘plyr’</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">=========================== piControl  ===========================</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Id  scenario     model ensemble freq      start        end  start_adj</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1:   13 piControl ACCESS1-0   r1i1p1  day  600-01-01  624-12-31  600-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2:   14 piControl ACCESS1-0   r1i1p1  day  625-01-01  649-12-31  625-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3:   15 piControl ACCESS1-0   r1i1p1  day  650-01-01  674-12-31  650-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4:   16 piControl ACCESS1-0   r1i1p1  day  675-01-01  699-12-31  675-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5:   17 piControl ACCESS1-0   r1i1p1  day  700-01-01  724-12-31  700-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1065: 1856 piControl    inmcm4   r1i1p1  day 2300-01-01 2309-12-31 2300-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1066: 1857 piControl    inmcm4   r1i1p1  day 2310-01-01 2319-12-31 2310-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1067: 1858 piControl    inmcm4   r1i1p1  day 2320-01-01 2329-12-31 2320-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1068: 1859 piControl    inmcm4   r1i1p1  day 2330-01-01 2339-12-31 2330-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1069: 1860 piControl    inmcm4   r1i1p1  day 2340-01-01 2349-12-31 2340-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          end_adj year_start year_end len</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1:  624-12-31        600      624  25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2:  649-12-31        625      649  25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3:  674-12-31        650      674  25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4:  699-12-31        675      699  25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5:  724-12-31        700      724  25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1065: 2309-12-31       2300     2309  10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1066: 2319-12-31       2310     2319  10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1067: 2329-12-31       2320     2329  10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1068: 2339-12-31       2330     2339  10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1069: 2349-12-31       2340     2349  10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                             file</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1: tasmax_day_ACCESS1-0_piControl_r1i1p1_06000101-06241231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2: tasmax_day_ACCESS1-0_piControl_r1i1p1_06250101-06491231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3: tasmax_day_ACCESS1-0_piControl_r1i1p1_06500101-06741231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4: tasmax_day_ACCESS1-0_piControl_r1i1p1_06750101-06991231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5: tasmax_day_ACCESS1-0_piControl_r1i1p1_07000101-07241231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1065:    tasmax_day_inmcm4_piControl_r1i1p1_23000101-23091231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1066:    tasmax_day_inmcm4_piControl_r1i1p1_23100101-23191231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1067:    tasmax_day_inmcm4_piControl_r1i1p1_23200101-23291231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1068:    tasmax_day_inmcm4_piControl_r1i1p1_23300101-23391231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1069:    tasmax_day_inmcm4_piControl_r1i1p1_23400101-23491231.nc</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

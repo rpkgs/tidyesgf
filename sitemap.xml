@@ -22,6 +22,9 @@
     <loc>/reference/aria2c.html</loc>
   </url>
   <url>
+    <loc>/reference/check_dfile.html</loc>
+  </url>
+  <url>
     <loc>/reference/color_terminal.html</loc>
   </url>
   <url>
@@ -35,6 +38,9 @@
   </url>
   <url>
     <loc>/reference/reexports.html</loc>
+  </url>
+  <url>
+    <loc>/reference/rm_duplicate.html</loc>
   </url>
   <url>
     <loc>/reference/search_esgf.html</loc>
