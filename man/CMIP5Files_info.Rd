@@ -72,6 +72,7 @@ CMIP5Files_filter(files_short) \%>\% CMIP5Files_summary()
 
 # filter CMIP5 files
 CMIP5Files_filter(files_short, duration = 200)
+
 }
 \seealso{
 \code{\link[=check_dfile]{check_dfile()}}, \code{\link[=rm_duplicate]{rm_duplicate()}}

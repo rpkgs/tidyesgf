@@ -134,8 +134,8 @@ CMIP5Files_info <- function(files) {
   info$file <- files
 
   # filename already includes model, scenario and ensemble info.
-  info <- info[order(basename(file))] %>% cbind(Id = seq_along(model), .)
-  info
+  # info <- info[order(basename(file))] %>% 
+  info %>% cbind(Id = seq_along(model), .)
 }
 
 #' @importFrom dplyr arrange across starts_with

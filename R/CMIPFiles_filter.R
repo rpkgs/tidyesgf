@@ -20,6 +20,8 @@
 #' @examples
 #' # filter CMIP5 files
 #' CMIP5Files_filter(files_short, duration = 200)
+#' 
+#' @importFrom plyr . ddply
 #' @export
 CMIP5Files_filter <- function(
     files, duration = 200, period = NULL, check_dupli = TRUE,
@@ -38,7 +40,8 @@ CMIP5Files_filter <- function(
     d_files <- info
   } else {
     if (is.null(period)) {
-      d_files <- ddply(info, .(model, ensemble, freq), filter_duration, duration = duration) %>% data.table()
+      # 替换为dplyr
+      d_files <- plyr::ddply(info, .(model, ensemble, freq), filter_duration, duration = duration) %>% data.table()
     } else {
       d_files <- info[year_end >= period[1] & year_start <= period[2]]
       d_files$start_adj %<>% pmax(make_date(period[1], 1, 1))
@@ -93,7 +96,7 @@ CMIP5Files_filter <- function(
       sprintf("===========================%s===========================\n", .)
     if (verbose > 0) cat(bold(sprintf(fmt, scenario)))
     ## check duplicated date
-    d_files <- ddply(d_files, .(model, ensemble, freq), rm_dupli) %>% data.table()
+    d_files <- plyr::ddply(d_files, .(model, ensemble, freq), rm_dupli) %>% data.table()
   }
   return(d_files)
 }

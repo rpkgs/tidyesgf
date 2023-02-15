@@ -86,3 +86,7 @@ is_empty <- function(x) {
 write_url <- function(x, outfile = "url.txt") {
   fwrite(data.table(x), outfile, col.names = FALSE)
 }
+
+check_str_null <- function(x) {
+  ifelse(is.null(x), "", x)
+}
