@@ -19,24 +19,33 @@
     <loc>/reference/CMIP5Files_info.html</loc>
   </url>
   <url>
-    <loc>/reference/build_esgf_url.html</loc>
+    <loc>/reference/aria2c.html</loc>
+  </url>
+  <url>
+    <loc>/reference/color_terminal.html</loc>
   </url>
   <url>
     <loc>/reference/get_CMIP5.html</loc>
   </url>
   <url>
+    <loc>/reference/get_data_node.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/ok.html</loc>
+    <loc>/reference/reexports.html</loc>
   </url>
   <url>
-    <loc>/reference/reexports.html</loc>
+    <loc>/reference/search_esgf.html</loc>
   </url>
   <url>
     <loc>/reference/tidy_esgp_docs.html</loc>
   </url>
   <url>
     <loc>/reference/tidyesgf-package.html</loc>
+  </url>
+  <url>
+    <loc>/reference/wget.html</loc>
   </url>
 </urlset>

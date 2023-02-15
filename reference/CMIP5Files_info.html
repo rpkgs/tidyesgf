@@ -133,7 +133,42 @@ If duration and period are <code>null</code> at the same time, no filter applied
 <span class="r-in"><span><span class="va">ensemble</span> <span class="op">&lt;-</span> <span class="fu">get_ensemble</span><span class="op">(</span><span class="va">files_short</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">extract_model</span><span class="op">(</span><span class="va">files_short</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">CMIP5Files_info</span><span class="op">(</span><span class="va">files_short</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in llply(info, ymd):</span> could not find function "llply"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Id  scenario     model ensemble freq      start        end  start_adj</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1:    1 piControl ACCESS1-0   r1i1p1  day  300-01-01  324-12-31  300-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2:    2 piControl ACCESS1-0   r1i1p1  day  325-01-01  349-12-31  325-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3:    3 piControl ACCESS1-0   r1i1p1  day  350-01-01  374-12-31  350-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4:    4 piControl ACCESS1-0   r1i1p1  day  375-01-01  399-12-31  375-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5:    5 piControl ACCESS1-0   r1i1p1  day  400-01-01  424-12-31  400-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2448: 2448 piControl    inmcm4   r1i1p1  day 2300-01-01 2309-12-31 2300-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2449: 2449 piControl    inmcm4   r1i1p1  day 2310-01-01 2319-12-31 2310-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2450: 2450 piControl    inmcm4   r1i1p1  day 2320-01-01 2329-12-31 2320-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2451: 2451 piControl    inmcm4   r1i1p1  day 2330-01-01 2339-12-31 2330-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2452: 2452 piControl    inmcm4   r1i1p1  day 2340-01-01 2349-12-31 2340-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          end_adj year_start year_end len</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1:  324-12-31        300      324  25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2:  349-12-31        325      349  25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3:  374-12-31        350      374  25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4:  399-12-31        375      399  25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5:  424-12-31        400      424  25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2448: 2309-12-31       2300     2309  10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2449: 2319-12-31       2310     2319  10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2450: 2329-12-31       2320     2329  10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2451: 2339-12-31       2330     2339  10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2452: 2349-12-31       2340     2349  10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                             file</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1: tasmax_day_ACCESS1-0_piControl_r1i1p1_03000101-03241231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2: tasmax_day_ACCESS1-0_piControl_r1i1p1_03250101-03491231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3: tasmax_day_ACCESS1-0_piControl_r1i1p1_03500101-03741231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4: tasmax_day_ACCESS1-0_piControl_r1i1p1_03750101-03991231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5: tasmax_day_ACCESS1-0_piControl_r1i1p1_04000101-04241231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2448:    tasmax_day_inmcm4_piControl_r1i1p1_23000101-23091231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2449:    tasmax_day_inmcm4_piControl_r1i1p1_23100101-23191231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2450:    tasmax_day_inmcm4_piControl_r1i1p1_23200101-23291231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2451:    tasmax_day_inmcm4_piControl_r1i1p1_23300101-23391231.nc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2452:    tasmax_day_inmcm4_piControl_r1i1p1_23400101-23491231.nc</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get the summary infomation of CMIP5Files_filter or CMIP5Files_info</span></span></span>
 <span class="r-in"><span><span class="fu">CMIP5Files_filter</span><span class="op">(</span><span class="va">files_short</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">CMIP5Files_summary</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -141,7 +176,7 @@ If duration and period are <code>null</code> at the same time, no filter applied
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># filter CMIP5 files</span></span></span>
 <span class="r-in"><span><span class="fu">CMIP5Files_filter</span><span class="op">(</span><span class="va">files_short</span>, duration <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in llply(info, ymd):</span> could not find function "llply"</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in ddply(info, .(model, ensemble, freq), filter_duration, duration = duration):</span> could not find function "ddply"</span>
 </code></pre></div>
     </div>
   </div>
