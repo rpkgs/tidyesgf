@@ -33,18 +33,21 @@ get_host <- function(url) {
   stringr::str_extract(url, "(?<=://)[^\\/]*")
 }
 
+ping2 <- function(x) {
+  cat(sprintf("ping: %-25s ", x))
+  time = pingr::ping(x) %>% mean(na.rm = TRUE)
+  
+  cat_fun = ifelse(is.na(time) || time > 200, warn, ok) 
+  cat_fun(sprintf("%.1f", time))
+  time
+}
+
 #' @importFrom dplyr arrange
 ping_host <- function(hosts, verbose = TRUE) {
-  speed_ms = sapply(hosts, function(x) {
-    cat(sprintf("ping: %-25s ", x))
-    time = pingr::ping(x) %>% mean(na.rm = TRUE)
-    
-    cat_fun = ifelse(is.na(time) || time > 200, warn, ok) 
-    cat_fun(sprintf("%.1f", time))
-    time
-  })
+  speed_ms = sapply(hosts, ping2)
   data.table(host = hosts, speed_ms) %>% arrange(speed_ms)
 }
+
 
 replace_null <- function(lst, replacement = NA) {
   ind <- Ipaper::which.isnull(lst)
@@ -76,4 +79,10 @@ is_empty <- function(x) {
   is.null(x) || 
     (is.data.frame(x) && nrow(x) == 0) || 
     length(x) ==0
+}
+
+#' @export
+#' @keywords internal
+write_url <- function(x, outfile = "url.txt") {
+  fwrite(data.table(x), outfile, col.names = FALSE)
 }

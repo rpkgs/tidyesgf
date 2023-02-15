@@ -5,7 +5,6 @@
 #' @importFrom crayon green red bold underline
 #'
 #' @keywords internal
-#' @export
 NULL
 
 #' @export

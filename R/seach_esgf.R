@@ -39,7 +39,9 @@ build_esgf_param <- function(..., param = NULL) {
 
 #' @rdname search_esgf
 #' @export
-build_esgf_url <- function(..., param = NULL, host = "https://esgf-node.llnl.gov/esg-search/search") {
+build_esgf_url <- function(..., param = NULL, 
+  host = "https://esgf-node.llnl.gov/esg-search/search") 
+{
   keys <- build_esgf_param(..., param = param)
   build_url(host, keys)
 }
@@ -54,9 +56,9 @@ retrieve_esgf_docs <- function(
   source_id = NULL, 
   ..., param = NULL) 
 {
-  param = build_esgf_param(
-    variable_id, table_id, experiment_id, member_id, source_id, 
-    ..., param = NULL)
+  keys = listk(variable_id, table_id, experiment_id, member_id, source_id) %>% 
+    modifyList(param)
+  param = build_esgf_param(param = keys)
   # print(param)
 
   offset   = 0
@@ -101,34 +103,26 @@ retrieve_esgf_docs <- function(
 #' @param ... named parameters
 #'
 #' @export 
-search_esgf <- function(
-  variable_id = "tasmax", 
-  table_id = "day", 
-  experiment_id = "historical", 
-  member_id = "r1i1p1f1", 
-  source_id = NULL, ..., 
-  url_type = c("HTTPServer", "OPENDAP"),
-  param) 
-{
-  param = build_esgf_param(
-    variable_id, table_id, experiment_id, member_id, source_id,
-    ..., param = NULL)
-    
+search_esgf <- function(param, url_type = c("HTTPServer", "OPENDAP"), ping = false) {
   t <- system.time({
     docs <- retrieve_esgf_docs(param = param)
   })
   print(t)
 
-  info <- tidy_esgp_docs(docs, url_type = url_type)
-  s <- CMIP5Files_info(info$file) %>% CMIP5Files_summary()
-  s
+  ## 1.2. 文件挑选与清洗
+  # url_type <- c("OPENDAP", "HTTPServer")
+  info <- tidy_esgp_docs(docs, url_type)
 
+  ## 1.3. 筛选：最新版本、最快节点
+  d_host <- ping_host(info$host %>% unique())
+  
   info2 <- merge(info, d_host)
   info2 %<>%
     group_by(file) %>%
     top_n(-1, version) %>% # lastest version
     group_by(file, version) %>%
-    top_n(-1, speed_ms) %>%
-    data.table() # fast node
-  info2
+    top_n(-1, speed_ms) %>% # fast node
+    select(-host) %>%
+    data.table()
+  info2 %>% data.frame()
 }

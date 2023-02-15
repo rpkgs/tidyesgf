@@ -28,7 +28,7 @@ tidy_esgp_docs <- function(docs, url_type = c("OPENDAP", "HTTPServer")) {
     "size", 
     # "version", "_version_", "timestamp", "_timestamp", "mod_time", 
     "source_id",
-    "north_degrees", "south_degrees", "east_degrees", "west_degrees",
+    # "north_degrees", "south_degrees", "east_degrees", "west_degrees",
     "nominal_resolution"
   )
 
@@ -44,7 +44,10 @@ tidy_esgp_docs <- function(docs, url_type = c("OPENDAP", "HTTPServer")) {
     cbind(info) %>% 
     relocate(source_id, file, version) %>% 
     arrange(source_id, file, version)
-  d
+  
+  info = CMIP5Files_info(d$file)
+  info %<>% cbind(d[, .(host, version, url_type, url, size_mb)])
+  info
 }
 
 # c(

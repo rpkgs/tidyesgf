@@ -11,7 +11,7 @@ Depends:
 Imports:
     magrittr, 
     dplyr, purrr, jsonlite,
-    stringr, 
+    stringr, glue,
     lubridate, 
     crayon, 
     data.table

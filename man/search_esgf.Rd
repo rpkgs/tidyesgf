@@ -25,16 +25,7 @@ retrieve_esgf_docs(
   param = NULL
 )
 
-search_esgf(
-  variable_id = "tasmax",
-  table_id = "day",
-  experiment_id = "historical",
-  member_id = "r1i1p1f1",
-  source_id = NULL,
-  ...,
-  url_type = c("HTTPServer", "OPENDAP"),
-  param
-)
+search_esgf(param, url_type = c("HTTPServer", "OPENDAP"), ping = false)
 }
 \arguments{
 \item{...}{named parameters}
