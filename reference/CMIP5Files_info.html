@@ -171,12 +171,12 @@ If duration and period are <code>null</code> at the same time, no filter applied
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2452:    tasmax_day_inmcm4_piControl_r1i1p1_23400101-23491231.nc</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get the summary infomation of CMIP5Files_filter or CMIP5Files_info</span></span></span>
-<span class="r-in"><span><span class="fu">CMIP5Files_filter</span><span class="op">(</span><span class="va">files_short</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">CMIP5Files_summary</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in CMIP5Files_filter(files_short) %&gt;% CMIP5Files_summary():</span> could not find function "%&gt;%"</span>
+<span class="r-in"><span><span class="fu">CMIP5Files_filter</span><span class="op">(</span><span class="va">files_short</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">CMIP5Files_summary</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called ‘plyr’</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># filter CMIP5 files</span></span></span>
 <span class="r-in"><span><span class="fu">CMIP5Files_filter</span><span class="op">(</span><span class="va">files_short</span>, duration <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in ddply(info, .(model, ensemble, freq), filter_duration, duration = duration):</span> could not find function "ddply"</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called ‘plyr’</span>
 </code></pre></div>
     </div>
   </div>
