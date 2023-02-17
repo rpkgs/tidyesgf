@@ -33,13 +33,14 @@ get_host <- function(url) {
   stringr::str_extract(url, "(?<=://)[^\\/]*")
 }
 
-ping2 <- function(x) {
+ping2 <- function(x, timeout = 3) {
   cat(sprintf("ping: %-25s ", x))
-  time = pingr::ping(x) %>% mean(na.rm = TRUE)
+  time = pingr::ping(x, timeout=timeout) %>% 
+    mean(na.rm = TRUE)
   
   cat_fun = ifelse(is.na(time) || time > 200, warn, ok) 
   cat_fun(sprintf("%.1f", time))
-  time
+  ifelse(is.na(time), 9999, time)
 }
 
 #' @importFrom dplyr arrange

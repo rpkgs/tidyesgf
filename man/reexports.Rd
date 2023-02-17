@@ -8,6 +8,7 @@
 \alias{green}
 \alias{underline}
 \alias{\%>\%}
+\alias{ping}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -18,5 +19,7 @@ below to see their documentation.
   \item{crayon}{\code{\link[crayon:crayon]{bold}}, \code{\link[crayon:crayon]{green}}, \code{\link[crayon:crayon]{red}}, \code{\link[crayon:crayon]{underline}}}
 
   \item{magrittr}{\code{\link[magrittr:pipe]{\%>\%}}}
+
+  \item{pingr}{\code{\link[pingr]{ping}}}
 }}
 

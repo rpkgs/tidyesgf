@@ -21,7 +21,7 @@
 #' }
 #'
 #' @export
-get_data_node <- function(speed_test = FALSE, timeout = 3) {
+get_data_node <- function(speed_test = TRUE, timeout = 3) {
   # read html page
   f <- tempfile()
   utils::download.file("https://esgf-node.llnl.gov/status/", f, "libcurl", quiet = TRUE)
@@ -65,24 +65,17 @@ get_data_node <- function(speed_test = FALSE, timeout = 3) {
   # nocov end
   res <- data.table::data.table(data_node = nodes, status = status)
   data.table::setorderv(res, "status", -1)
-
-  if (!speed_test) {
-    return(res)
-  }
-
+  
+  if (!speed_test) return(res)
+  
   # nocov start
-  if (!requireNamespace("pingr", quietly = TRUE)) {
-    stop(
-      "'epwshiftr' relies on the package 'pingr' to perform speed test",
-      "please add this to your library with install.packages('pingr') and try again."
-    )
-  }
-
   if (!length(nodes_up <- res[status == "UP", data_node])) {
     message("No working data nodes available now. Skip speed test")
     return(res)
   }
-
-  speed <- vapply(nodes_up, ping2, numeric(1))
-  res[status == "UP", ping := speed][order(ping)]
+  
+  res$speed_ms <- sapply(res$data_node, ping2)
+  res %>% arrange(speed_ms)
+  # speed <- vapply(nodes_up, ping2, numeric(1))
+  # res[status == "UP", ping := speed][order(ping)]
 }

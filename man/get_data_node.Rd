@@ -4,7 +4,7 @@
 \alias{get_data_node}
 \title{Get data nodes which store CMIP6 output}
 \usage{
-get_data_node(speed_test = FALSE, timeout = 3)
+get_data_node(speed_test = TRUE, timeout = 3)
 }
 \arguments{
 \item{speed_test}{If \code{TRUE}, use \code{\link[pingr:ping]{pingr::ping()}} to perform connection speed
