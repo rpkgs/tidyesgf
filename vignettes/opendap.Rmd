@@ -22,11 +22,14 @@ library(dplyr)
 ## 1.1. 获取文件信息
 ```{r, eval=FALSE}
 param <- list(
-  variable_id = "tasmax", 
+  variable_id = "huss", 
   table_id = "day", 
-  experiment_id = "piControl", 
+  experiment_id = "ssp370", 
   member_id = "r1i1p1f1"
 )
+
+outfile = with(param, 
+  glue("data-raw/{variable_id}_{table_id}_{experiment_id}_{member_id}.csv"))
 
 # param <- list(
 #   variable_id = "huss",
@@ -34,25 +37,42 @@ param <- list(
 #   experiment_id = "historical"
 # )
 docs <- retrieve_esgf_docs(param = param)
-print(t)
 
 ## 1.2. 文件挑选与清洗
 # url_type <- c("OPENDAP", "HTTPServer")
 url_type <- c("HTTPServer", "OPENDAP") %>% rev()
 info <- tidy_esgp_docs(docs, url_type)
-```
-
-```{r, eval=FALSE}
 ## 1.3. 筛选：最新版本、最快节点
 d_host <- ping_host(info$host %>% unique())
-```
 
-```{r, eval=FALSE}
 info2 <- merge(info, d_host)
 info2 %<>% 
   group_by(file) %>% top_n(-1, version) %>%      # lastest version
   group_by(file, version) %>% top_n(-1, speed_ms) %>% # fast node
   select(-host) %>% data.table()
+fwrite(info2, outfile)
 
-CMIP5Files_info(info2$file) %>% CMIP5Files_summary()
+CMIP5Files_info(info2$file) %>% CMIP5Files_summary() -> s
+s
+```
+
+```{r, eval=FALSE}
+# save(s, info2, file = "tmp.rda")
+load("tmp.rda")
+library(Ipaper)
+
+models = s$model
+lst = split(info2, info2$model)
+
+# 并行可能效果好一些
+.tmp <- foreach(d = lst, i = icount()) %do% {
+  foreach(url = d$url, i = icount()) %do% {
+    tryCatch({
+      download_nc_dap(url, outdir="OUTDIR")
+    }, error = function(e) {
+      message(sprintf('%s', e$message))
+    })
+  }
+}
+
 ```

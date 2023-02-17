@@ -14,11 +14,11 @@ Imports:
     stringr, glue,
     plyr,
     lubridate, 
+    pingr,
     crayon, 
     data.table
 Suggests: 
     testthat (>= 3.0.0),
-    pingr,
     knitr,
     rmarkdown
 Config/testthat/edition: 3

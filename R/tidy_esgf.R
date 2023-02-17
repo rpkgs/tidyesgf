@@ -20,7 +20,7 @@ tidy_esgp_docs <- function(docs, url_type = c("OPENDAP", "HTTPServer")) {
   urls_raw = sapply(docs$url, filter_esgp_url, url_type)
   tmp = urls_raw %>% strsplit("\\|")
   info <- data.table(
-    url = map_chr(tmp, ~ .[1]),
+    url = map_chr(tmp, ~ .[1]) %>% gsub("\\.html$", "", .),
     url_type = map_chr(tmp, ~ .[3])
   )
   
