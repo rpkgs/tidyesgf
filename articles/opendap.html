@@ -94,11 +94,14 @@
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">param</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  variable_id <span class="op">=</span> <span class="st">"tasmax"</span>, </span>
+<span>  variable_id <span class="op">=</span> <span class="st">"huss"</span>, </span>
 <span>  table_id <span class="op">=</span> <span class="st">"day"</span>, </span>
-<span>  experiment_id <span class="op">=</span> <span class="st">"piControl"</span>, </span>
+<span>  experiment_id <span class="op">=</span> <span class="st">"ssp370"</span>, </span>
 <span>  member_id <span class="op">=</span> <span class="st">"r1i1p1f1"</span></span>
 <span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">outfile</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">param</span>, </span>
+<span>  <span class="fu">glue</span><span class="op">(</span><span class="st">"data-raw/{variable_id}_{table_id}_{experiment_id}_{member_id}.csv"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># param &lt;- list(</span></span>
 <span><span class="co">#   variable_id = "huss",</span></span>
@@ -106,23 +109,41 @@
 <span><span class="co">#   experiment_id = "historical"</span></span>
 <span><span class="co"># )</span></span>
 <span><span class="va">docs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/search_esgf.html">retrieve_esgf_docs</a></span><span class="op">(</span>param <span class="op">=</span> <span class="va">param</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## 1.2. 文件挑选与清洗</span></span>
 <span><span class="co"># url_type &lt;- c("OPENDAP", "HTTPServer")</span></span>
 <span><span class="va">url_type</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HTTPServer"</span>, <span class="st">"OPENDAP"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">info</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tidy_esgp_docs.html">tidy_esgp_docs</a></span><span class="op">(</span><span class="va">docs</span>, <span class="va">url_type</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## 1.3. 筛选：最新版本、最快节点</span></span>
-<span><span class="va">d_host</span> <span class="op">&lt;-</span> <span class="fu">ping_host</span><span class="op">(</span><span class="va">info</span><span class="op">$</span><span class="va">host</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">info2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">info</span>, <span class="va">d_host</span><span class="op">)</span></span>
+<span><span class="va">info</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tidy_esgp_docs.html">tidy_esgp_docs</a></span><span class="op">(</span><span class="va">docs</span>, <span class="va">url_type</span><span class="op">)</span></span>
+<span><span class="co">## 1.3. 筛选：最新版本、最快节点</span></span>
+<span><span class="va">d_host</span> <span class="op">&lt;-</span> <span class="fu">ping_host</span><span class="op">(</span><span class="va">info</span><span class="op">$</span><span class="va">host</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">info2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">info</span>, <span class="va">d_host</span><span class="op">)</span></span>
 <span><span class="va">info2</span> <span class="op">%&lt;&gt;%</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/top_n.html" class="external-link">top_n</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="va">version</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>      <span class="co"># lastest version</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">file</span>, <span class="va">version</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/top_n.html" class="external-link">top_n</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="va">speed_ms</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="co"># fast node</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">host</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">data.table</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">fwrite</span><span class="op">(</span><span class="va">info2</span>, <span class="va">outfile</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/CMIP5Files_info.html">CMIP5Files_info</a></span><span class="op">(</span><span class="va">info2</span><span class="op">$</span><span class="va">file</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/CMIP5Files_info.html">CMIP5Files_summary</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/CMIP5Files_info.html">CMIP5Files_info</a></span><span class="op">(</span><span class="va">info2</span><span class="op">$</span><span class="va">file</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/CMIP5Files_info.html">CMIP5Files_summary</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">s</span></span>
+<span><span class="va">s</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># save(s, info2, file = "tmp.rda")</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">"tmp.rda"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">Ipaper</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">models</span> <span class="op">=</span> <span class="va">s</span><span class="op">$</span><span class="va">model</span></span>
+<span><span class="va">lst</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">info2</span>, <span class="va">info2</span><span class="op">$</span><span class="va">model</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 并行可能效果好一些</span></span>
+<span><span class="va">.tmp</span> <span class="op">&lt;-</span> <span class="fu">foreach</span><span class="op">(</span>d <span class="op">=</span> <span class="va">lst</span>, i <span class="op">=</span> <span class="fu">icount</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%do%</span> <span class="op">{</span></span>
+<span>  <span class="fu">foreach</span><span class="op">(</span>url <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">url</span>, i <span class="op">=</span> <span class="fu">icount</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%do%</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>      <span class="fu">download_nc_dap</span><span class="op">(</span><span class="va">url</span>, outdir<span class="op">=</span><span class="st">"OUTDIR"</span><span class="op">)</span></span>
+<span>    <span class="op">}</span>, error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">'%s'</span>, <span class="va">e</span><span class="op">$</span><span class="va">message</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 </div>
   </div>
 
