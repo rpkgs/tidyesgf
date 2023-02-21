@@ -94,12 +94,20 @@
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">param</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  variable_id <span class="op">=</span> <span class="st">"huss"</span>, </span>
+<span>  variable_id <span class="op">=</span> <span class="st">"tasmax"</span>, </span>
 <span>  table_id <span class="op">=</span> <span class="st">"day"</span>, </span>
-<span>  experiment_id <span class="op">=</span> <span class="st">"ssp370"</span>, </span>
+<span>  experiment_id <span class="op">=</span> <span class="st">"ssp245"</span>, <span class="co">#</span></span>
+<span>  source_id <span class="op">=</span> <span class="st">"KIOST-ESM"</span>,</span>
 <span>  member_id <span class="op">=</span> <span class="st">"r1i1p1f1"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
+<span><span class="va">param</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  variable_id <span class="op">=</span> <span class="st">"huss"</span>,</span>
+<span>  table_id <span class="op">=</span> <span class="st">"day"</span>,</span>
+<span>  experiment_id <span class="op">=</span> <span class="st">"historical"</span>, <span class="co">#</span></span>
+<span>  source_id <span class="op">=</span> <span class="st">"E3SM-1-0"</span>,</span>
+<span>  member_id <span class="op">=</span> <span class="st">"r1i1p1f1"</span></span>
+<span><span class="op">)</span></span>
 <span><span class="va">outfile</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">param</span>, </span>
 <span>  <span class="fu">glue</span><span class="op">(</span><span class="st">"data-raw/{variable_id}_{table_id}_{experiment_id}_{member_id}.csv"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -127,9 +135,12 @@
 <span><span class="fu"><a href="../reference/CMIP5Files_info.html">CMIP5Files_info</a></span><span class="op">(</span><span class="va">info2</span><span class="op">$</span><span class="va">file</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/CMIP5Files_info.html">CMIP5Files_summary</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">s</span></span>
 <span><span class="va">s</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># save(s, info2, file = "tmp.rda")</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">"tmp.rda"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">Ipaper</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">Ipaper</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/" class="external-link">reticulate</a></span><span class="op">)</span></span>
+<span><span class="fu">source_python</span><span class="op">(</span><span class="st">"inst/python/CMIP6tools.py"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># save(s, info2, file = "tmp.rda")</span></span>
+<span><span class="co"># load("tmp.rda")</span></span>
 <span></span>
 <span><span class="va">models</span> <span class="op">=</span> <span class="va">s</span><span class="op">$</span><span class="va">model</span></span>
 <span><span class="va">lst</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">info2</span>, <span class="va">info2</span><span class="op">$</span><span class="va">model</span><span class="op">)</span></span>
