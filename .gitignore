@@ -9,5 +9,6 @@
 *.nc
 *.nc4
 
+*.csv
 *.txt
 inst/doc

@@ -25,7 +25,7 @@ retrieve_esgf_docs(
   param = NULL
 )
 
-search_esgf(param, url_type = c("HTTPServer", "OPENDAP"), ping = false)
+search_esgf(param, url_type = c("OPENDAP", "HTTPServer"), ping = false)
 }
 \arguments{
 \item{...}{named parameters}

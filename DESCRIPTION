@@ -12,6 +12,7 @@ Imports:
     magrittr, 
     dplyr, purrr, jsonlite,
     stringr, glue,
+    httr,
     plyr,
     lubridate, 
     pingr,

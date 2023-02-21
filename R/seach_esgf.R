@@ -47,6 +47,7 @@ build_esgf_url <- function(..., param = NULL,
 }
 
 #' @rdname search_esgf
+#' @importFrom httr GET content
 #' @export 
 retrieve_esgf_docs <- function(
   variable_id = "tasmax", 
@@ -72,7 +73,8 @@ retrieve_esgf_docs <- function(
     url <- build_esgf_url(param = param)
     warn(url)
 
-    res <- jsonlite::fromJSON(url)$response
+    p = GET(url) %>% content()
+    res <- jsonlite::fromJSON(p)$response
     docs %<>% rbind(res$docs)
 
     numFound <- res$numFound
@@ -103,26 +105,26 @@ retrieve_esgf_docs <- function(
 #' @param ... named parameters
 #'
 #' @export 
-search_esgf <- function(param, url_type = c("HTTPServer", "OPENDAP"), ping = false) {
-  t <- system.time({
-    docs <- retrieve_esgf_docs(param = param)
-  })
-  print(t)
+search_esgf <- function(param, url_type = c("OPENDAP", "HTTPServer"), ping = false, raw=FALSE) {
+  docs <- retrieve_esgf_docs(param = param)
 
   ## 1.2. 文件挑选与清洗
   # url_type <- c("OPENDAP", "HTTPServer")
+  # url_type <- c("HTTPServer", "OPENDAP") %>% rev()
   info <- tidy_esgp_docs(docs, url_type)
-
+  info %<>% group_by(file) %>%
+    top_n(-1, version) %>%
+    data.table()
+  if (raw) return(info)
+  
   ## 1.3. 筛选：最新版本、最快节点
   d_host <- ping_host(info$host %>% unique())
   
   info2 <- merge(info, d_host)
-  info2 %<>%
-    group_by(file) %>%
-    top_n(-1, version) %>% # lastest version
+  info2 %<>% # lastest version
     group_by(file, version) %>%
     top_n(-1, speed_ms) %>% # fast node
     select(-host) %>%
     data.table()
-  info2 %>% data.frame()
+  info2
 }

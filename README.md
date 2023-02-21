@@ -9,7 +9,9 @@
 <!-- [![monthly](http://cranlogs.r-pkg.org/badges/tidyesgf)](https://www.rpackages.io/package/tidyesgf) -->
 <!-- badges: end -->
 
-The goal of `tidyesgf` is to ...
+- [x] `ESGF`: `CMIP6`文件检索；
+
+- [x] `opendap`: 裁剪指定区域并下载；如果只是下载中国区域，相比于全球，数据量会小20倍，因此下载速度也更可观。
 
 ## Installation
 
