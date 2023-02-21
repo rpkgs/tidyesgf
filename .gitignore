@@ -12,3 +12,8 @@
 *.csv
 *.txt
 inst/doc
+
+__pycache__
+*.ipynb
+
+OUTPUT

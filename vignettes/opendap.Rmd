@@ -22,12 +22,20 @@ library(dplyr)
 ## 1.1. 获取文件信息
 ```{r, eval=FALSE}
 param <- list(
-  variable_id = "huss", 
+  variable_id = "tasmax", 
   table_id = "day", 
-  experiment_id = "ssp370", 
+  experiment_id = "ssp245", #
+  source_id = "KIOST-ESM",
   member_id = "r1i1p1f1"
 )
 
+param <- list(
+  variable_id = "huss",
+  table_id = "day",
+  experiment_id = "historical", #
+  source_id = "E3SM-1-0",
+  member_id = "r1i1p1f1"
+)
 outfile = with(param, 
   glue("data-raw/{variable_id}_{table_id}_{experiment_id}_{member_id}.csv"))
 
@@ -57,9 +65,12 @@ s
 ```
 
 ```{r, eval=FALSE}
-# save(s, info2, file = "tmp.rda")
-load("tmp.rda")
 library(Ipaper)
+library(reticulate)
+source_python("inst/python/CMIP6tools.py")
+
+# save(s, info2, file = "tmp.rda")
+# load("tmp.rda")
 
 models = s$model
 lst = split(info2, info2$model)

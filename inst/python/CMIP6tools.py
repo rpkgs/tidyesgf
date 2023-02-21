@@ -57,7 +57,7 @@ def download_opendap(url, outfile=None, outdir="CMIP6",
 
 
 # TODO add a main script
-def download_opendap_multi(urls, outdir="CMIP6", overwrite=False, complevel=1, np=2):
+def download_opendap_multi(urls, outdir="CMIP6", overwrite=False, complevel=1, np=6):
     with ThreadPool(processes=np) as pool:
         pool.map(partial(download_opendap, outdir=outdir, overwrite=overwrite,
                          complevel=complevel), urls)
@@ -80,5 +80,5 @@ if __name__ == '__main__':
     # urls
     maxIters = 10
     for i in range(0, maxIters):
-        download_opendap_multi_low(urls, "./OUTDIR/SAM0-UNICON")
-    # download_opendap_multi(urls, "OUTDIR")
+        download_opendap_multi_low(urls, "./OUTPUT/SAM0-UNICON")
+    # download_opendap_multi(urls, "OUTPUT")
