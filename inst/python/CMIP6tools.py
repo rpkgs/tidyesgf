@@ -40,20 +40,20 @@ def download_opendap(url, outfile=None, outdir="CMIP6",
     if (not os.path.exists(outfile)) or overwrite:
         print(path.basename(outfile))
 
-        try:
-            # 速度非常慢，怀疑没有生效
-            # ds = xr.open_dataset(url, concat_dim="time", preprocess=partial(clip_china))
-            ds = xr.open_dataset(url, use_cftime=True)
-            d = clip_china(ds)
-            # print(d)
+        # try:
+        # 速度非常慢，怀疑没有生效
+        # ds = xr.open_dataset(url, concat_dim="time", preprocess=partial(clip_china))
+        ds = xr.open_dataset(url, use_cftime=True)
+        d = clip_china(ds)
+        # print(d)
 
-            varname = get_bands(ds)[-1]
-            compress = {varname: {"zlib": True, "complevel": complevel}}
+        varname = get_bands(ds)[-1]
+        compress = {varname: {"zlib": True, "complevel": complevel}}
 
-            d.load()
-            d.to_netcdf(outfile, encoding=compress)  # 加载数据需要占用一定时间
-        except Exception as e:
-            print("[e] %s: %s\n" % (url, str(e)))
+        d.load()
+        d.to_netcdf(outfile, encoding=compress)  # 加载数据需要占用一定时间
+        # except Exception as e:
+        #     print("[e] %s: %s\n" % (url, str(e)))
 
 
 # TODO add a main script
@@ -76,9 +76,10 @@ if __name__ == '__main__':
     d = pd.read_csv("./data-raw/tasmax_day_historical_r1i1p1f1.csv")
     urls = list(d.url)
 
-    urls = readLines("./piControl_opendap.txt")
+    # urls = readLines("./piControl_opendap.txt")
+    urls = readLines("./urls.txt")[0:2]
     # urls
     maxIters = 10
     for i in range(0, maxIters):
-        download_opendap_multi_low(urls, "./OUTPUT/SAM0-UNICON")
+        download_opendap_multi_low(urls, "./OUTPUT/ChinaHW")
     # download_opendap_multi(urls, "OUTPUT")

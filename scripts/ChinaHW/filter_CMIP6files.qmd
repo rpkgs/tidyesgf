@@ -1,0 +1,166 @@
+```{r}
+url = "https://esgf-data.dkrz.de/esg-search/search/?offset=0&limit=10000&type=Dataset&replica=false&latest=true&experiment_id=hist-GHG%2Chist-aer%2Chist-nat%2Chistorical&frequency=day&variable_id=huss%2Ctasmax&mip_era=CMIP6&activity_id%21=input4MIPs&facets=mip_era%2Cactivity_id%2Cproduct%2Csource_id%2Cinstitution_id%2Csource_type%2Cnominal_resolution%2Cexperiment_id%2Csub_experiment_id%2Cvariant_label%2Cgrid_label%2Ctable_id%2Cfrequency%2Crealm%2Cvariable_id%2Ccf_standard_name%2Cdata_node&format=application%2Fsolr%2Bjson"
+URLdecode(url)
+```
+
+```{r}
+library(httr)
+library(xml2)
+library(magrittr)
+library(jsonlite)
+library(dplyr)
+```
+
+# 1. 案例1
+
+## 1.1. 获取文件信息
+```{r}
+scenarios = scenarios_cmip6[-5] %>% paste(collapse = ",")
+
+param <- list(
+  variable_id = "tasmax,huss", 
+  table_id = "day", 
+  experiment_id = scenarios,
+  # member_id = "r1i1p1f1"
+  member_id = NULL
+)
+
+# param <- list(
+#   variable_id = "huss",
+#   source_id = "E3SM-2-0",
+#   experiment_id = "historical"
+# )
+t <- system.time({
+  docs <- retrieve_esgf_docs(param = param)
+})
+print(t)
+```
+
+```{r}
+## 1.2. 文件挑选与清洗
+url_type <- c("OPENDAP", "HTTPServer")
+# url_type <- c("HTTPServer", "OPENDAP")
+info <- tidy_esgp_docs(docs, url_type)
+
+## 1.3. 筛选：最新版本、最快节点
+# d_host <- ping_host(info$host %>% unique())
+info2 <- merge(info, d_host)
+info2 %<>% 
+  group_by(file) %>% top_n(-1, version) %>%      # lastest version
+  group_by(file, version) %>% top_n(-1, speed_ms) %>% # fast node
+  select(-host) %>% data.table()
+info2 %>% data.table()
+
+s_huss <- CMIP5Files_info(info2[variable == "huss", file]) %>% CMIP5Files_summary()
+
+s_tas <- CMIP5Files_info(info2[variable == "tasmax", file]) %>% CMIP5Files_summary()
+
+save(info2, s_huss, s_tas, file = "info_huss&tasmax.rda")
+# s
+```
+
+
+```{r}
+library(data.table)
+library(Ipaper)
+
+load("./info_huss&tasmax.rda")
+
+options("datatable.print.nrow" = 100)
+d = merge(
+  s_tas[, .(model, ensemble, scenario, year_start, year_end)], 
+  s_huss[, .(model, ensemble, scenario, year_start, year_end)],
+  by = c("model", "ensemble", "scenario")
+  )
+# models_dul = c(
+#   "MPI-ESM1-2-LR" 
+# )
+tbl = d[, .N, .(model, scenario, ensemble)] %>% 
+  dcast(model + ensemble ~ scenario, value.var = "N") %>% 
+  arrange(model, ensemble) %>% 
+  mutate(real_id = str_extract(ensemble, "(?<=r).*(?=i)") %>% as.numeric())
+
+tbl = tbl[historical > 0, ] %>% select(-ssp460)
+
+tbl[, .N, model][N > 1] %>% arrange(model)
+tbl[, .N, model] %>% arrange(model)
+
+models_single = tbl[, .N, model][N == 1, model]
+
+tbl2 = list(
+  tbl[model == "ACCESS-CM2" & `hist-GHG` > 0],
+  tbl[model == "ACCESS-ESM1-5" & `hist-GHG` > 0],
+  tbl[model == "CNRM-CM6-1" & `hist-GHG` > 0],
+  tbl[model == "CNRM-ESM2-1" & `ssp126` > 0],
+  tbl[model == "CanESM5" & `hist-GHG` > 0],
+  tbl[model == "E3SM-1-0" & `hist-GHG` > 0],
+  tbl[model == "E3SM-2-0" & `hist-GHG` > 0],
+  tbl[model == "EC-Earth3" & ssp245 > 0 & ssp585 > 0],
+  tbl[model == "EC-Earth3-CC" & ssp585 > 0],
+  tbl[model == "EC-Earth3-Veg" & ssp245 > 0 & ssp126 > 0],
+  tbl[model == "EC-Earth3-Veg-LR" & ssp245 > 0 & ssp126 > 0],
+  tbl[model == "FGOALS-g3" & `hist-GHG` > 0 & ssp126 > 0],
+  tbl[model == "GFDL-ESM4" & `hist-GHG` > 0],
+  tbl[model == "HadGEM3-GC31-MM" & `ssp585` > 0 & ssp126 > 0],
+  tbl[model == "INM-CM5-0" & `ssp585` > 0 & ssp126 > 0],
+  tbl[model == "MIROC-ES2L" & `ssp585` > 0 & ssp126 > 0],
+  tbl[model == "MIROC6" & `ssp585` > 0 & ssp245 > 0],
+  tbl[model == "MPI-ESM1-2-HR" & `ssp585` > 0 & ssp245 > 0],
+  tbl[model == "MRI-ESM2-0" & `hist-GHG` > 0],
+  tbl[model == "NorESM2-MM" & `ssp585` > 0],
+  tbl[model == "UKESM1-0-LL" & `ssp585` > 0]
+) %>% rbindlist() %>% 
+  rbind(tbl[model %in% models_single, ])
+
+models_org = setdiff(unique_sort(tbl$model), unique_sort(tbl2$model)) %>% 
+  setdiff("MPI-ESM1-2-LR")
+
+tbl_final = rbind(tbl2, tbl[model %in% models_org, ]) %>% 
+  arrange(model, real_id)
+
+write_list2xlsx(tbl, "modelInfo.xlsx", show=F)
+write_list2xlsx(tbl_final, "tbl_final.xlsx", show = F)
+# fwrite(tbl_final, "tbl_final.csv")
+```
+
+```{r}
+d_fs = merge(info2, tbl_final[,.(model, ensemble)])
+## 挑选realizations
+```
+
+# A data frame: 39 × 2    
+```{r}
+   model                 N
+   <chr>             <int>
+ 1 ACCESS-CM2           10: 3个
+ 2 ACCESS-ESM1-5        40: 3个
+ 4 BCC-CSM2-MR           2: 全取
+ 5 CMCC-CM2-SR5         10: 全取
+ 7 CNRM-CM6-1           29: 3个
+ 9 CNRM-ESM2-1           9：1个，r1i1p1f2_gr，只取，其他没有ssp
+10 CanESM5              50: 10个
+11 E3SM-1-0              5: 3个
+12 E3SM-2-0              5: 全取
+13 EC-Earth3            74: 2个
+14 EC-Earth3-AerChem     3: 全取
+15 EC-Earth3-CC         10: 1个
+16 EC-Earth3-Veg         8: 5个
+17 EC-Earth3-Veg-LR      3: 全取
+18 FGOALS-f3-L           3: 全取
+19 FGOALS-g3             5: 2个
+20 GFDL-CM4              2: 全球
+21 GFDL-ESM4             3: 1个
+22 HadGEM3-GC31-LL       5: 全取
+23 HadGEM3-GC31-MM       4: 1个
+26 INM-CM5-0            10: 1个
+27 KACE-1-0-G            3: 全取
+29 MIROC-ES2L           31：10个
+30 MIROC6               10: 7个
+31 MPI-ESM-1-2-HAM       3: 3个
+32 MPI-ESM1-2-HR        10: 2个
+# 33 MPI-ESM1-2-LR        31: 低分辨率，弃用
+34 MRI-ESM2-0           12: 5个
+35 NorESM2-LM            3: 3个
+36 NorESM2-MM            3: 1个
+39 UKESM1-0-LL          17: 6个
+```

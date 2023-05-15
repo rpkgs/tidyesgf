@@ -17,3 +17,7 @@ __pycache__
 *.ipynb
 
 OUTPUT
+*.rda
+*.xlsx
+*.vdoc.jl
+*.sh

@@ -25,6 +25,7 @@ tidy_esgp_docs <- function(docs, url_type = c("OPENDAP", "HTTPServer")) {
   )
   
   names <- c(
+    "variable", 
     "size", 
     # "version", "_version_", "timestamp", "_timestamp", "mod_time", 
     "source_id",
@@ -46,7 +47,7 @@ tidy_esgp_docs <- function(docs, url_type = c("OPENDAP", "HTTPServer")) {
     arrange(source_id, file, version)
   
   info = CMIP5Files_info(d$file)
-  info %<>% cbind(d[, .(host, version, url_type, url, size_mb)])
+  info %<>% cbind(d[, .(variable, host, version, url_type, url, size_mb)])
   info
 }
 
