@@ -21,3 +21,4 @@ OUTPUT
 *.xlsx
 *.vdoc.jl
 *.sh
+*.html

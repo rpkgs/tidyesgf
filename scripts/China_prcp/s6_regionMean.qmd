@@ -1,0 +1,143 @@
+```{r}
+library(sf2)
+library(Ipaper)
+library(terra)
+library(dplyr)
+
+fs = dir2("X:/rpkgs/tidyesgf/OUTPUT/China_climIndex", "*.nc")
+f = fs[1]
+```
+
+```{r}
+get_RegionMean <- function(f) {
+  print(basename(f))
+  year = ncread(f, "year")
+  varnames = c("cdd", "r20mm", "rx5day", "r95ptot", "prcptot")
+
+  r <- exactextractr::exact_extract(terra::rast(f), sf2::bou1_4p, "weighted_mean",
+    weights = "area"
+  )
+  value <- as.numeric(r)
+  data.table(
+    year = year,
+    varname = rep(varnames, each = length(year)),
+    value
+  )
+}
+
+models = sf2:::get_model(fs)
+df_sim = map(fs, get_RegionMean) %>% melt_list(model = models)
+
+df_obs = get_RegionMean("X:/rpkgs/tidyesgf/OUTPUT/CN05.1_Pre_1961_2021_climIndex.nc")
+# d = get_RegionMean(f)
+
+df = merge(
+  df_sim %>% rename(sim = value), 
+  df_obs %>% rename(obs = value)
+)
+```
+
+```{r}
+data = df %>%
+  group_by(model, varname) %>%
+  group_modify(~taylor_data(.$obs, .$sim)) %>% as.data.table()
+print(data)
+```
+
+
+```{r}
+library(ggplot2)
+library(patchwork)
+
+mar = 0.03
+ps = foreach(var = varnames, i = icount()) %do% {
+  dat = data[varname == var, ]
+  p = ggplot(dat) +
+    geom_taylor(aes2(sd.obs, sd.mod, R, color = model), obs.colour = "black", obs.size = 5) +
+    # geom_point(aes(color = model), size = 5) +
+    facet_wrap(~varname) +
+    labs(color = NULL) +
+    theme_bw() +
+    theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      legend.position = "none",
+      # legend.position = c(1, 1) - c(1, 1 / 3) * mar,
+      legend.justification = c(1, 1)
+    )
+  p  
+}
+
+g = wrap_plots(ps, nrow = 2)
+write_fig(g, 'd:/Figures/Yuchen_taylor.pdf', 10, 5)
+```
+
+# 1. 平均
+```{julia}
+using Ipaper
+using nctools
+using nctools.CMIP
+
+
+function nc_mean(f; outdir)
+  name = gsub(basename(f), "_climIndex", "_climIndex_mean")
+  fout = "$outdir/$name"
+  
+  ra = Raster(f)
+  r = mean(ra, dims=:year) |> x -> x[Dim{:year}(1)]
+  write(fout, r)
+end
+
+
+fs = dir("X:/rpkgs/tidyesgf/OUTPUT/China_climIndex")
+info = CMIPFiles_info(fs)
+
+for f = fs
+  outdir = "X:/rpkgs/tidyesgf/OUTPUT/China_climIndex_Mean"
+  nc_mean(f; outdir)
+end
+```
+
+> 学习使用Rasters，它可能具有更高的效率
+
+```{julia}
+using Rasters
+
+# 10行的代码变成两行
+ra = Raster(f)
+r = mean(ra, dims=:year) |> x -> x[Dim{:year}(1)]
+write("temp.nc", r)
+```
+
+
+# 2. 绘图检查空间分布
+
+```{r}
+fs = dir2("X:/rpkgs/tidyesgf/OUTPUT/China_climIndex_Mean")
+fs
+```
+
+```{r}
+shp <- vect(sf2::bou1_4p)
+
+library(rcolors)
+brks = c(0, 50, 100, 200, 500, 800, 1000, 1500, 2000, Inf) 
+cols = get_color(rcolors$amwg256, length(brks) - 1) %>% rev()
+
+lst <- foreach(f = fs, i = icount()) %do% {
+  r <- rast(f)
+  names(r) <- varnames
+  r
+}
+
+write_fig({
+  par(mfrow = c(9, 5), mar = c(1, 1, 1, 1))
+  foreach(f = fs, r = lst, i = icount()) %do% {
+    model = sf2:::get_model(f)
+    runningId(i, 5)
+    # r = rast(f)
+    plot(r[[5]], main = model, breaks = brks, col = cols, legend=F)
+    plot(shp, add = TRUE)
+  }
+}, 'd:/Figures/Yuchen_prcptol.pdf', 10, 15)
+```

@@ -82,7 +82,7 @@ retrieve_esgf_docs <- function(
     ok(sprintf("[ok] %dth loop: found %4d files ...", i, numFound))
     
     offset <- nrow(docs)
-    print2(offset, res$numFound)
+    # print2(offset, res$numFound)
     i = i + 1
   }
   docs

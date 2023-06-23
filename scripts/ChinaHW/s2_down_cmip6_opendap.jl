@@ -4,25 +4,13 @@ using nctools.CMIP
 # using Tidytable2
 using DataFrames
 
+dir_root = "/mnt/z/GitHub/rpkgs/tidyesgf/OUTPUT/ChinaHW"
+
 using MPI
 MPI.Init()
 comm = MPI.COMM_WORLD
 cluster = MPI.Comm_rank(comm)
 ncluster = MPI.Comm_size(comm)
-
-get_host(x::AbstractString) = str_extract(x, "(?<=://)[^\\/]*")
-is_ssp(x::AbstractString) = x[1:3] == "ssp"
-is_r1i1p1f1(x::AbstractString) = x[1:8] == "r1i1p1f1"
-
-function down_each(d)
-  prefix = str_extract(f, ".*(?=_\\d{4})")
-  date_begin = d[1, :date_begin]
-  date_end = d[end, :date_end]
-  fout = "$(prefix)_$date_begin-$date_end.nc"
-
-  urls = d.file
-  nc_subset(urls, range, fout)
-end
 
 range = [70, 140, 15, 55]
 delta = 5
@@ -32,14 +20,25 @@ urls = readlines("urls.txt")
 @time info = CMIPFiles_info(urls; include_year=true)
 ## ssp需要过滤掉一些年份
 info2 = @pipe info |> _[_.year_begin .<= 2100, :] |> 
-              _[.!is_r1i1p1f1.(_.ensemble), :] |> 
-              _[_.scenario.!="ssp460", :]
+              # _[.!is_r1i1p1f1.(_.ensemble), :] |> 
+              _[_.scenario.!="ssp460", :] |> unique
 
-# add a match2 procedure
+# fs = basename.(dir(dir_root))
+# _, I_x, I_y = match2(basename.(info2.file), fs)
+# info2 = info2[Not(I_x),:]
+# # add a match2 procedure
+@show info2
+
+df = @pipe info2 |> _[_.scenario.!="ssp585", :] |>
+           _[_.model.=="E3SM-1-0", :] |>
+           _[_.ensemble.=="r2i1p1f1_gr", :] |> 
+           _[_.year_begin .== 2075, :]
+           
+# historical的IITM-ESM只有一个r1i1p1f1_gn，是最后多了一天导致的，裁剪可以解决
+# ssp585的E3SM-1-0的r2i1p1f1_gr的2075-2084年有问题，正好对应一份文件
 
 host = get_host.(info2.file)
 CMIP.cbind(info2; host)
-
 lst = groupby(info2, [:host])
 # hosts = @pipe info.file[1] |> str_extract(_, "(?<=//).*(?=/)")
 
@@ -60,7 +59,7 @@ function down_groups(urls)
       continue
     end
     url = urls[i]
-    
+
     try
       @time nc_subset(url, range; outdir="./OUTPUT/ChinaHW")
     catch ex
@@ -74,7 +73,7 @@ for d = lst
   # println(d)
   println(nrow(d))
   urls = d.file
-
+  
   try
     down_groups(urls)
   catch e

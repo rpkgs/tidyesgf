@@ -1,0 +1,59 @@
+```{julia}
+using Ipaper
+using nctools
+using nctools.CMIP
+# using Tidytable2
+using DataFrames
+
+dir_root = "/mnt/z/GitHub/rpkgs/tidyesgf/OUTPUT/ChinaHW"
+
+using MPI
+MPI.Init()
+comm = MPI.COMM_WORLD
+cluster = MPI.Comm_rank(comm)
+ncluster = MPI.Comm_size(comm)
+
+function map_dt(fun::Function, lst)
+  map(i -> fun(lst[i]), eachindex(lst))
+end
+```
+
+```{julia}
+# d = fread("./urls.txt"; header=false, sep=",")
+urls = readlines("urls.txt")
+@time info = CMIPFiles_info(urls; include_year=true)
+## ssp需要过滤掉一些年份
+info2 = @pipe info |> _[_.year_begin.<=2100, :] |>
+              # _[.!is_r1i1p1f1.(_.ensemble), :] |> 
+              _[_.scenario.!="ssp460", :] |> unique
+
+indir = "OUTPUT/ChinaHW"
+info2.file = map(x -> "$indir/$x", basename.(info2.file))
+```
+
+```{julia}
+lst = groupby(info2, [:variable, :model, :ensemble, :scenario])
+lens = map_dt(nrow, lst)
+```
+
+```{julia}
+df = @pipe info2 |> _[_.model.=="TaiESM1", :]
+lst = groupby(df, [:variable, :model, :ensemble, :scenario])
+```
+
+```{julia}
+```
+
+## 添加一个计算年平均的函数
+
+```{julia}
+using RCall
+# 获取fraction函数
+
+```
+
+
+
+```{julia}
+nc_combine(lst; outdir="OUTPUT/combine")
+```
