@@ -1,7 +1,8 @@
 build_url <- function(host, param, ...) {
   sprintf("%s=%s", names(param), unlist(param)) %>%
     paste0(collapse = "&") %>%
-    paste0(host, "/?", .)
+    paste0(host, "/?", .) |> 
+    URLencode()
 }
 
 
@@ -37,10 +38,12 @@ build_esgf_param <- function(..., param = NULL) {
   keys
 }
 
+host_llnl = "https://esgf-node.llnl.gov/esg-search/search"
+host_dkrz = "https://esgf-data.dkrz.de/esg-search/search"
+
 #' @rdname search_esgf
 #' @export
-build_esgf_url <- function(..., param = NULL, 
-  host = "https://esgf-node.llnl.gov/esg-search/search") 
+build_esgf_url <- function(..., param = NULL, host = host_dkrz) 
 {
   keys <- build_esgf_param(..., param = param)
   build_url(host, keys)

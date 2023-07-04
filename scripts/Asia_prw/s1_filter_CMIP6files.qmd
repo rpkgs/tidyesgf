@@ -1,0 +1,87 @@
+```{r}
+library(Ipaper)
+# library(httr)
+# library(xml2)
+library(magrittr)
+library(jsonlite)
+library(dplyr)
+
+devtools::load_all()
+```
+
+```{r}
+url = "https://esgf-data.dkrz.de/esg-search/search/?offset=0&limit=10000&type=Dataset&replica=false&latest=true&experiment_id=historical&frequency=day&variable_id=prw&mip_era=CMIP6&activity_id%21=input4MIPs&facets=mip_era%2Cactivity_id%2Cproduct%2Csource_id%2Cinstitution_id%2Csource_type%2Cnominal_resolution%2Cexperiment_id%2Csub_experiment_id%2Cvariant_label%2Cgrid_label%2Ctable_id%2Cfrequency%2Crealm%2Cvariable_id%2Ccf_standard_name%2Cdata_node&format=application%2Fsolr%2Bjson"
+URLdecode(url)
+```
+
+```{r}
+scenarios = scenarios_cmip6[4] %>% paste(collapse = ",")
+
+host <- "https://esgf-data.dkrz.de/esg-search/search/"
+params <- list(
+  distrib       = "false",
+  type          = "File",
+  mip_era       = "CMIP6",
+  variable_id   = "prw",
+  experiment_id = "historical,ssp585",
+  # member_id   = "r1i1p1f1",
+  frequency     = "day",
+  limit         = 10000,
+  format        = "application%2Fsolr%2Bjson"
+)
+url = build_url(host, params)
+
+p = GET(url) |> content()
+l <- fromJSON(p)
+docs <- l$response$docs
+nrow(docs)
+```
+
+# 1. 案例1
+
+## 1.1. 获取文件信息
+
+```{r}
+## 1.2. 文件挑选与清洗
+url_type <- c("OPENDAP", "HTTPServer")
+# url_type <- c("HTTPServer", "OPENDAP")
+info <- tidy_esgp_docs(docs, url_type)
+
+## 1.3. 筛选：最新版本、最快节点
+d_host <- ping_host(info$host %>% unique())
+d_host[host == "esgf.ichec.ie", speed_ms := 999]
+
+info2 <- merge(info, d_host)
+info2 %<>%
+  group_by(file) %>%
+  top_n(-1, version) %>% # lastest version
+  group_by(file, version) %>%
+  top_n(-1, speed_ms) %>% # fast node
+  select(-host) %>%
+  data.table()
+info2 %>% data.table()
+
+s <- CMIP5Files_info(info2[, file]) %>% CMIP5Files_summary()
+s
+
+## 筛选models
+fs = dir2("Z:/ChinaHW/CMIP6_cluster_HItasmax_adjchunk/HI_tasmax_year/ssp585")
+models <- get_model(fs, "_year_", "_ssp")
+s_sel = s[model %in% models & grepl("r1i1p1f1", ensemble), ]
+
+info3 = merge(info2, s_sel[, 1:3])
+
+# save(info2, s, file = "info_prw.rda")
+writeLines(info3$url, "urls_prw.txt")
+```
+
+```{julia}
+using nctools
+
+f = "esg_dataroot/CMIP6/CMIP/CMCC/CMCC-CM2-HR4/historical/r1i1p1f1/Eday/prw/gn/v20200904/prw_Eday_CMCC-CM2-HR4_historical_r1i1p1f1_gn_18500101-18591231.nc"
+
+url = "http://esgf-data04.diasjp.net/thredds/dodsC/$f"
+nc_open(url)
+
+# http://esg.lasg.ac.cn/thredds/dodsC/esg_dataroot/CMIP6/CMIP/CAS/FGOALS-f3-L/historical/r1i1p1f1/day/pr/gr/v20191019/pr_day_FGOALS-f3-L_historical_r1i1p1f1_gr_18500101-18591231.nc
+```

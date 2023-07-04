@@ -83,7 +83,7 @@ function cal_climIndex(f; outdir=".", overwrite=false)
   period_ref = [1961, 1990]
   inds_ref = period_ref[1] .<= years .<= period_ref[2]
   data_ref = selectdim(data, 3, inds_ref)
-  q95 = mapslices(x -> nanquantile(x; probs=[0.95]), data_ref, dims=3)[:, :, 1] |> x -> Float32.(x)
+  q95 = mapslices(x -> NanQuantile(x; probs=[0.95]), data_ref, dims=3)[:, :, 1] |> x -> Float32.(x)
   # q95 = Float32.(q95)
 
   ## 计算
