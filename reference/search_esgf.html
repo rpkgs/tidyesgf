@@ -56,15 +56,11 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">build_esgf_param</span><span class="op">(</span><span class="va">...</span>, param <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">build_esgf_url</span><span class="op">(</span></span>
-<span>  <span class="va">...</span>,</span>
-<span>  param <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  host <span class="op">=</span> <span class="st">"https://esgf-node.llnl.gov/esg-search/search"</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">build_esgf_url</span><span class="op">(</span><span class="va">...</span>, param <span class="op">=</span> <span class="cn">NULL</span>, host <span class="op">=</span> <span class="va">host_dkrz</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">retrieve_esgf_docs</span><span class="op">(</span></span>
 <span>  variable_id <span class="op">=</span> <span class="st">"tasmax"</span>,</span>
-<span>  table_id <span class="op">=</span> <span class="st">"day"</span>,</span>
+<span>  frequency <span class="op">=</span> <span class="st">"day"</span>,</span>
 <span>  experiment_id <span class="op">=</span> <span class="st">"historical"</span>,</span>
 <span>  member_id <span class="op">=</span> <span class="st">"r1i1p1f1"</span>,</span>
 <span>  source_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -98,7 +94,7 @@
 
 <ul><li><p>project       : "CMIP6"</p></li>
 <li><p>type          : "File"</p></li>
-<li><p>table_id      : "day"</p></li>
+<li><p>frequency      : "day"</p></li>
 <li><p>variable_id   : "tasmax"</p></li>
 <li><p>experiment_id : "historical"</p></li>
 <li><p>source_id     : "ACCESS-CM2"</p></li>
