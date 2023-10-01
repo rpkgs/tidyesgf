@@ -9,15 +9,11 @@
 \usage{
 build_esgf_param(..., param = NULL)
 
-build_esgf_url(
-  ...,
-  param = NULL,
-  host = "https://esgf-node.llnl.gov/esg-search/search"
-)
+build_esgf_url(..., param = NULL, host = host_dkrz)
 
 retrieve_esgf_docs(
   variable_id = "tasmax",
-  table_id = "day",
+  frequency = "day",
   experiment_id = "historical",
   member_id = "r1i1p1f1",
   source_id = NULL,
@@ -45,7 +41,7 @@ search_esgf
 \itemize{
 \item project       : "CMIP6"
 \item type          : "File"
-\item table_id      : "day"
+\item frequency      : "day"
 \item variable_id   : "tasmax"
 \item experiment_id : "historical"
 \item source_id     : "ACCESS-CM2"

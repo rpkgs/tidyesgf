@@ -10,7 +10,7 @@ default_param_esgf <- list(
   project       = "CMIP6",
   distrib       = "false",
   type          = "File",
-  table_id      = "day",
+  frequency      = "day",
   variable_id   = "tasmax",
   experiment_id = "historical",
   # experiment_id = "hist-nat",
@@ -54,13 +54,13 @@ build_esgf_url <- function(..., param = NULL, host = host_dkrz)
 #' @export 
 retrieve_esgf_docs <- function(
   variable_id = "tasmax", 
-  table_id = "day", 
+  frequency = "day", 
   experiment_id = "historical", 
   member_id = "r1i1p1f1", 
   source_id = NULL, 
   ..., param = NULL) 
 {
-  keys = listk(variable_id, table_id, experiment_id, member_id, source_id) %>% 
+  keys = listk(variable_id, frequency, experiment_id, member_id, source_id) %>% 
     modifyList(param)
   param = build_esgf_param(param = keys)
   # print(param)
@@ -99,7 +99,7 @@ retrieve_esgf_docs <- function(
 #'
 #' - project       : "CMIP6"
 #' - type          : "File"
-#' - table_id      : "day"
+#' - frequency      : "day"
 #' - variable_id   : "tasmax"
 #' - experiment_id : "historical"
 #' - source_id     : "ACCESS-CM2"

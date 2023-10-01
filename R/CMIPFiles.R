@@ -51,7 +51,7 @@ extract_model <- function(files) {
 #' @rdname get_CMIP5
 #' @export
 get_freq <- function(file) {
-  str_extract(basename(file), "^[:alpha:]{3,6}")
+  str_extract(basename(file), "(?<=_)[:alpha:]{3,6}(?=_)")
 }
 
 #' @rdname get_CMIP5
@@ -101,10 +101,11 @@ NULL
 #' 
 #' @importFrom lubridate ymd date year month
 #' @export
-CMIP5Files_info <- function(files) {
-  varname <- get_varname(files[1]) %>% paste0("_")
-
-  files_short <- basename(files) %>% gsub(varname, "", .)
+CMIP5Files_info <- function(files) {  
+  files_short = basename(files)
+  # varname <- get_varname(files) %>% paste0("_")
+  # files_short <- basename(files) %>% gsub(varname, "", .)
+  
   model <- extract_model(files)
   ensemble <- get_ensemble(files_short)
   freq <- get_freq(files_short)
