@@ -1,0 +1,75 @@
+```{r}
+library(httr)
+library(xml2)
+library(magrittr)
+library(jsonlite)
+library(dplyr)
+library(Ipaper)
+```
+
+# 1. 案例1
+
+## 1.1. 获取文件信息
+```{r}
+# scenarios = scenarios_cmip6[-5] %>% paste(collapse = ",")
+scenarios = c("historical", "hist-nat", "piControl", "ssp585") %>% paste(collapse = ",")
+variables = c("hfls") %>% paste(collapse = ",")
+# variables = c("mrros")
+# variables = c("areacella")
+
+param <- list(
+  variable_id = paste(variables, collapse = ","), 
+  frequency = "day", 
+  experiment_id = scenarios,
+  member_id = "r1i1p1f1"
+  # member_id = NULL
+)
+
+t <- system.time({
+  docs <- retrieve_esgf_docs(param = param)
+})
+print(t)
+
+## 1.2. 文件挑选与清洗
+url_type <- c("OPENDAP", "HTTPServer")[2]
+# url_type <- c("HTTPServer", "OPENDAP")
+info <- tidy_esgp_docs(docs, url_type)
+# info = info[model != "Amon"]
+l = CMIP5Files_summary(info) %>% {split(., .$scenario)}
+# table(info$variable)
+```
+
+```{r}
+# CMIP5
+```
+
+
+```{r}
+writeLines(info$url, "urls.txt")
+# https://1drv.ms/f/s!AkyAYezqAajhgpVNGpu662uanLDCYw?e=FRamyf
+```
+
+
+```{r}
+library(data.table)
+tbl <- dcast(info, model ~ scenario, value.var = "ensemble")
+write_list2xlsx(tbl, "CMIP6_mrros_available_models.xlsx")
+# tbl[model == "Amon", model := "GISS-E2-1-G"]
+# write_list2xlsx(tbl, "CMIP6_WB_historical_available_models_V2.xlsx")
+```
+
+## 1.3. 筛选：最新版本、最快节点
+
+```{r}
+d_host <- ping_host(info$host %>% unique())
+info2 <- merge(info, d_host)
+
+info2 %<>% 
+  group_by(file) %>% top_n(-1, version) %>%      # lastest version
+  group_by(file, version) %>% top_n(-1, speed_ms) %>% # fast node
+  select(-host) %>% data.table()
+info2 %>% data.table()
+
+save(info, info2, file = "info_wb.rda")
+writeLines(info2$url, "urls_mrros.txt")
+```

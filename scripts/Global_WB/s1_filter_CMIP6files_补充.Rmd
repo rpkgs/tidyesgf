@@ -1,0 +1,97 @@
+```{r}
+library(httr)
+library(xml2)
+library(magrittr)
+library(jsonlite)
+library(dplyr)
+```
+
+
+```{r}
+url = "https://esgf-data.dkrz.de/esg-search/search/?offset=0&limit=10&type=Dataset&replica=false&latest=true&source_id=EC-Earth3%2CEC-Earth3-AerChem%2CEC-Earth3-CC%2CEC-Earth3-Veg%2CEC-Earth3-Veg-LR&experiment_id=historical&variant_label=r1i1p1f1&frequency=mon&variable_id=mrros&mip_era=CMIP6&activity_id%21=input4MIPs&facets=mip_era%2Cactivity_id%2Cproduct%2Csource_id%2Cinstitution_id%2Csource_type%2Cnominal_resolution%2Cexperiment_id%2Csub_experiment_id%2Cvariant_label%2Cgrid_label%2Ctable_id%2Cfrequency%2Crealm%2Cvariable_id%2Ccf_standard_name%2Cdata_node"
+
+URLdecode(url)
+```
+
+```{r}
+facet = "facets=mip_era,activity_id,product,source_id,institution_id,source_type,nominal_resolution,experiment_id,sub_experiment_id,variant_label,grid_label,table_id,frequency,realm,variable_id,cf_standard_name,data_node"
+
+url = glue("https://esgf-data.dkrz.de/esg-search/search/?offset=0&limit=10&type=Dataset&replica=false&latest=true&source_id=EC-Earth3,EC-Earth3-AerChem,EC-Earth3-CC,EC-Earth3-Veg,EC-Earth3-Veg-LR&experiment_id=historical&variant_label=r1i1p1f1&frequency=mon&variable_id=mrros&mip_era=CMIP6&activity_id!=input4MIPs&{facet}")
+
+
+p <- GET(url) %>% content()
+res <- jsonlite::fromJSON(p)$response
+
+# facets=mip_era,activity_id,product,source_id,institution_id,source_type,nominal_resolution,experiment_id,sub_experiment_id,variant_label,grid_label,table_id,frequency,realm,variable_id,cf_standard_name,data_node
+```
+
+
+
+# 1. 案例1
+
+## 1.1. 获取文件信息
+```{r}
+# scenarios = scenarios_cmip6[-5] %>% paste(collapse = ",")
+scenarios = c("historical", "ssp245", "ssp585") %>% paste(collapse = ",")
+variables = c("pr", "mrro", "mrros", "evspsbl", "tas", "mrso") %>% paste(collapse = ",")
+# variables = c("mrros")
+# variables = c("areacella")
+
+param <- list(
+  # type = "Dataset",
+  type = "File",
+  variable_id = paste(variables, collapse = ","), 
+  frequency = "mon", 
+  experiment_id = scenarios,
+  member_id = "r1i1p1f1"
+  # member_id = NULL
+)
+
+t <- system.time({
+  docs <- retrieve_esgf_docs(param = param)
+})
+print(t)
+
+## 1.2. 文件挑选与清洗
+url_type <- c("OPENDAP", "HTTPServer")[2]
+# url_type <- c("HTTPServer", "OPENDAP")
+info <- tidy_esgp_docs(docs, url_type)
+info = info[model != "Amon"]
+
+table(info$variable)
+```
+
+```{r}
+writeLines(info$url, "urls.txt")
+# https://1drv.ms/f/s!AkyAYezqAajhgpVNGpu662uanLDCYw?e=FRamyf
+```
+
+
+```{r}
+library(data.table)
+
+tbl <- dcast(info, model ~ scenario, value.var = "ensemble")
+write_list2xlsx(tbl, "CMIP6_mrros_available_models_V3.xlsx")
+
+# tbl <- dcast(info, model ~ scenario, value.var = "ensemble")
+# write_list2xlsx(tbl, "CMIP6_mrros_available_models.xlsx")
+# tbl[model == "Amon", model := "GISS-E2-1-G"]
+# write_list2xlsx(tbl, "CMIP6_WB_historical_available_models_V2.xlsx")
+```
+
+## 1.3. 筛选：最新版本、最快节点
+
+```{r}
+d_host <- ping_host(info$host %>% unique())
+info2 <- merge(info, d_host)
+
+info2 %<>% 
+  group_by(file) %>% top_n(-1, version) %>%      # lastest version
+  group_by
+  (file, version) %>% top_n(-1, speed_ms) %>% # fast node
+  select(-host) %>% data.table()
+info2 %>% data.table()
+
+save(info, info2, file = "info_wb.rda")
+writeLines(info2$url, "urls.txt")
+```

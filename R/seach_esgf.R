@@ -7,19 +7,20 @@ build_url <- function(host, param, ...) {
 
 
 default_param_esgf <- list(
-  project       = "CMIP6",
-  distrib       = "false",
-  type          = "File",
-  frequency      = "day",
-  variable_id   = "tasmax",
-  experiment_id = "historical",
+  # project       = "CMIP6",
+  mip_era       = "CMIP6",
+  # distrib       = "true", # major issues v20231005, should rm
+  type          = "File", 
+  # frequency      = "day",
+  # variable_id   = "tasmax",
+  # experiment_id = "historical",
   # experiment_id = "hist-nat",
   # source_id   = "ACCESS-CM2",
   # member_id     = "r1i1p1f1",
   limit         = 1e4,
   format        = "application%2Fsolr%2Bjson",
-  # replica       = FALSE,
-  latest        = TRUE,
+  replica       = "false",
+  latest        = "true",
   offset        = 0
 )
 

@@ -16,7 +16,7 @@ filter_esgp_url <- function(urls, url_type = c("OPENDAP", "HTTPServer")) {
 #' @importFrom purrr map map_chr
 #' 
 #' @export 
-tidy_esgp_docs <- function(docs, url_type = c("OPENDAP", "HTTPServer")) {
+tidy_esgp_docs <- function(docs, url_type = c("OPENDAP", "HTTPServer"), raw=FALSE) {
   urls_raw = sapply(docs$url, filter_esgp_url, url_type)
   tmp = urls_raw %>% strsplit("\\|")
   info <- data.table(
@@ -46,9 +46,13 @@ tidy_esgp_docs <- function(docs, url_type = c("OPENDAP", "HTTPServer")) {
     relocate(source_id, file, version) %>% 
     arrange(source_id, file, version)
   
-  info = CMIP5Files_info(d$file)
-  info %<>% cbind(d[, .(variable, host, version, url_type, url, size_mb)])
-  info
+  if (!raw) {
+    info = CMIP5Files_info(d$file)
+    info %<>% cbind(d[, .(variable, host, version, url_type, url, size_mb)])
+    info
+  } else {
+    d
+  }
 }
 
 # c(
