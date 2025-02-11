@@ -1,6 +1,6 @@
 using Ipaper
-using nctools
-using nctools.CMIP
+using NetCDFTools
+using NetCDFTools.CMIP
 # using Tidytable2
 using DataFrames
 

@@ -31,9 +31,7 @@ for d = lst
   end
 end
 
-
-dat = filter_model(info, ["FGOALS-g3", "EC-Earth3"][2])
-d = split_model(dat)[1]
-
-nc_combine(d; outdir=".")
+# dat = filter_model(info, ["FGOALS-g3", "EC-Earth3"][2])
+# d = split_model(dat)[1]
+# nc_combine(d; outdir=".")
 # @subset(info, scenasrio == "historical" .&& model == "EC-Earth3", verbose=true)

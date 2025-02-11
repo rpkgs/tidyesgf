@@ -1,0 +1,51 @@
+```{r}
+library(terra)
+
+f = "Z:/ChinaHW/CMIP6_cluster_HItasmax_adjchunk/HI_tasmax_year/historical/G100_HI_tasmax_adj_year_ACCESS-CM2_historical_r1i1p1f1_gn_18500101-20141231.nc"
+
+ra = rast(f)
+ra
+
+vals = as.array(ra)
+dim(vals) # 与ra一致；
+
+image(vals[,,1])
+
+ra2 = rast(ra, vals=vals)
+plot(ra2[[1]])
+```
+
+```{r}
+library(nctools)
+library(Ipaper)
+
+data = ncread(f, "HImax")
+# dim(data)
+e = ext(ra)
+ra3 = rast(data[,,1] |> t(), extent=e)
+plot(ra3)
+
+image(t(data[,,1]))
+```
+
+
+```{julia}
+# using Rasters
+using nctools
+using Plots
+using RCall
+
+# ra = Raster(f)
+# plot(ra[:, :, 1])
+```
+
+```{julia}
+# cell_x = lon[2] - lon[]
+```
+
+```{julia}
+heatmap(data[:, :, 1]', yflip=true); # should looks normal
+```
+
+
+## TODO 

@@ -4,7 +4,7 @@
 \alias{tidy_esgp_docs}
 \title{tidy_esgp_docs}
 \usage{
-tidy_esgp_docs(docs, url_type = c("OPENDAP", "HTTPServer"))
+tidy_esgp_docs(docs, url_type = c("OPENDAP", "HTTPServer"), raw = FALSE)
 }
 \arguments{
 \item{url_type}{if \code{url_type[1]} not found, use \code{url_type[2]} instead}

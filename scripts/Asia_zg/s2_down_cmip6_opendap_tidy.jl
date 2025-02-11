@@ -19,16 +19,14 @@ dir_root = path_mnt("/mnt/x/rpkgs/tidyesgf/OUTPUT/China_zg")
 # range = [70, 140, 15, 55]
 range = [70, 160, 5, 60]
 delta = 5
-urls = readlines("urls_zg_ghg.txt")[-1]
+urls = readlines("urls_zg_ghg.txt")[2:end]
 @time info = CMIPFiles_info(urls; include_year=true)
 
 info2 = filter_finished(info, dir_root) |> add_host
 info2.model = @pipe basename.(info2.file) |> 
   str_extract(_, "(?<=day_|dayZ_).*(?=_his|_ssp)")
 @show nrow(info2)
-
-writelines(info2.file, "a.txt")
-
+# writelines(info2.file, "a.txt")
 
 function down_groups(urls)
   for i = eachindex(urls)
@@ -36,11 +34,16 @@ function down_groups(urls)
     url = urls[i]
 
     try
-      @time nc_subset(url, range; outdir=dir_root, verbose=false, big=false)
+      # nc = nc_open(url)
+      # if ndims(nc) != 4
+      #   println("dims dismatch: $(basename(url))")
+      #   continue;
+      # end
+      @time nc_subset(url, range; outdir=dir_root, verbose=false, big=true)
     catch ex
       @show ex
     end
   end
 end
 
-down_groups(info2.file)
+down_groups(reverse(info2.file))
