@@ -1,6 +1,6 @@
 Package: tidyesgf
 Title: What the Package Does (One Line, Title Case)
-Version: 0.1.0.9000
+Version: 0.1.1
 Authors@R: c(
   person("Dongdong", "Kong", role = c("aut", "cre"), 
          email = "kongdd.sysu@gmail.com", comment = c(ORCID = "0000-0003-1836-8172")))
